@@ -1,19 +1,27 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
     <router-view />
   </div>
 </template>
 
+<script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
+import { Action } from "vuex-class";
+
+@Component
+class AppPage extends Vue {
+  @Action("setConfig") setConfig: any;
+  time: any;
+  beforeMount() {
+    this.setConfig({ key: "screenWidth", val: window.innerWidth });
+    this.setConfig({ key: "screenHeight", val: window.innerHeight });
+  }
+}
+export default AppPage;
+</script>
+
 <style lang="stylus">
+@import './assets/stylus/comm'
 #app
-  font-family Avenir, Helvetica, Arial, sans-serif
-  -webkit-font-smoothing antialiased
-  -moz-osx-font-smoothing grayscale
-  text-align center
-  color #2c3e50
-  margin-top 60px
+  color #262626
 </style>

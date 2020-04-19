@@ -1,14 +1,30 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import NewUser from "../views/NewUser.vue";
+import Review from "../views/Review.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
+    redirect: "/home"
+  },
+  {
+    path: "/home",
     name: "Home",
     component: Home
+  },
+  {
+    path: "/newUser",
+    name: "newUser",
+    component: NewUser
+  },
+  {
+    path: "/review",
+    name: "/review",
+    component: Review
   },
   {
     path: "/about",
@@ -22,8 +38,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
-  mode: "history",
-  base: process.env.BASE_URL,
+  mode: "hash",
   routes
 });
 
