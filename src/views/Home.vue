@@ -1,7 +1,7 @@
 <template lang="pug">
 .container.relative
   //- span(style="position: absolute; top: 15px; left: 15px; z-index: 20") {{screenHeight}} ; {{screenWidth}} ; {{deviceRatio}}
-  span(style="position: absolute; top: 15px; left: 15px; z-index: 20", @click="cancelAuth") 取消授权
+  //- span(style="position: absolute; top: 15px; left: 15px; z-index: 20", @click="cancelAuth") 取消授权
   .box.banner-bg.full-width
     img.banner-img(src="../assets/imgs/home_banner.png")
     div(style="height: 30px")
@@ -110,7 +110,7 @@ class HomePage extends Vue {
   async getWxUserInfo(code: string) {
     try {
       const data = await me.commRequest(
-        "http://scp-dev.xingyun361.com/api/wechat/auth/oauth",
+        "http://scp.xingyun361.com/api/wechat/auth/oauth",
         { code, appKey: "xingYun" },
         "post"
       );
@@ -118,8 +118,7 @@ class HomePage extends Vue {
       this.wxObj = data.obj;
       localStorage.setItem("wxUser", JSON.stringify(this.wxObj));
       this.userAuth = true;
-      window.location.href =
-        "http://wechat.xingyun361.com/xyreviewdev/index.html";
+      window.location.href = me.visitUrl;
     } catch (e) {
       me.$alert.show({ msg: e.message });
     }
@@ -226,7 +225,7 @@ class HomePage extends Vue {
       };
       if (this.wxObj.subscribe) body.subscribe = this.wxObj.subscribe;
       await me.commRequest(
-        "http://crm-admin-test.xingyun361.com/crmserver/api/v1/customer/bindWxAuthXyLinker",
+        "http://crmadmin.xingyun361.com/api/v1/customer/bindWxAuthXyLinker",
         body,
         "post",
         "crm"
@@ -240,7 +239,7 @@ class HomePage extends Vue {
     window.location.href =
       "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" +
       me.appId +
-      "&redirect_uri=http%3A%2F%2Fwechat.xingyun361.com%2Fxyreviewdev%2Findex.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+      "&redirect_uri=http%3A%2F%2Fwechat.xingyun361.com%2Fxyreview%2Findex.html&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
   }
 }
 export default HomePage;

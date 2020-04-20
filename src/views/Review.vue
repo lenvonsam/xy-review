@@ -1,6 +1,6 @@
 <template lang="pug">
 .container(v-if="loadFinish")
-  span(style="position: absolute; top: 15px; left: 15px; z-index: 20", @click="clearData") 清空
+  //- span(style="position: absolute; top: 15px; left: 15px; z-index: 20", @click="clearData") 清空
   music
   //- span(style="position: absolute; top: 15px; left: 15px; z-index: 20") {{screenHeight}} ; {{screenWidth}} {{deviceRatio}}
   .banner-bg.border-box.full-width.empty-bg.relative(:style="{height: screenHeight + 'px'}", v-if="reviewObj.all_weight === 0")

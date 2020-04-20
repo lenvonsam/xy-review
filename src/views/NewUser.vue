@@ -2,7 +2,7 @@
 .container
   music
   //- span(style="position: absolute; top: 15px; left: 15px; z-index: 20") {{screenHeight}} ; {{screenWidth}}
-  span(style="position: absolute; top: 15px; left: 15px; z-index: 20", @click="clearData") 清空
+  //- span(style="position: absolute; top: 15px; left: 15px; z-index: 20", @click="clearData") 清空
   .box.full-width.banner-bg
     .right-img
       img(src="../assets/imgs/new_user_girl.png")

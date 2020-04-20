@@ -9,7 +9,7 @@ class MixinConfig extends Vue {
   appId = "wxb1a990032d59f1d4";
   phoneReg = /^1[3-9]\d{9}$/;
   codeReg = /^\d+$/;
-  visitUrl = "http://wechat.xingyun361.com/xyreviewdev/index.html";
+  visitUrl = "http://wechat.xingyun361.com/xyreview/index.html";
   query2Obj(query: any): any {
     const arr = query.split("&");
     const obj: any = {};

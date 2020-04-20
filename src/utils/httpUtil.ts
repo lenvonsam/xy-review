@@ -2,7 +2,7 @@ import axois from "axios";
 import Qs from "qs";
 import wx from "weixin-js-sdk";
 class HttpUtil {
-  private BASICURL = "https://mobileapp.xingyun361.com/quasarserverdev";
+  private BASICURL = "https://mobileapp.xingyun361.com/quasarserver";
   private serializeformQuery(requestParams: any, encodeUrl = false) {
     let query = "";
     for (const param in requestParams) {
