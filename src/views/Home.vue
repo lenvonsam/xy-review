@@ -118,8 +118,7 @@ class HomePage extends Vue {
       this.wxObj = data.obj;
       localStorage.setItem("wxUser", JSON.stringify(this.wxObj));
       this.userAuth = true;
-      window.location.href =
-        "http://wechat.xingyun361.com/xyreviewdev/index.html";
+      window.location.href = me.visitUrl;
     } catch (e) {
       me.$alert.show({ msg: e.message });
     }
