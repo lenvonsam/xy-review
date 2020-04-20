@@ -17,7 +17,7 @@
       .input-bg.pr-5
         .row
           .flex-20.flex.align-center
-            img.icon(src="../assets/imgs/pwd_icon.png", style="margin-top: 2px")
+            img.icon(src="../assets/imgs/pwd_icon.png")
           .col.pr-5
             input(placeholder="请输入验证码", type="tel", v-model="code", @blur="iosAdaptor")
           .flex-68
@@ -319,9 +319,9 @@ export default HomePage;
         width 100%
         background transparent
         border 0px
-        height 30px
-        color #9d9d9d
-        font-size 13px
+        height 25px
+        // color #9d9d9d
+        // font-size 13px
       .captcha
         height 35px
         width 65px
