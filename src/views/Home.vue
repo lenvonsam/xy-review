@@ -24,20 +24,13 @@
             .captcha(@click="getCode") {{codeText}}
         .login-btn(@click="loginAction")
   .bottom-shape
-    //- .bottom-shape-l
-    //- .bottom-shape-r
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import alertModal from "@/components/AlertModal.vue";
 
 let me: any;
-@Component({
-  components: {
-    alertModal
-  }
-})
+@Component({})
 class HomePage extends Vue {
   phone = "";
   code = "";
@@ -290,24 +283,6 @@ export default HomePage;
         height 10px
     .space
       height 15px
-    .bottom-shape-l
-      position absolute
-      bottom 0px
-      left 0
-      background-image url('../assets/imgs/review_login_bl.png')
-      background-size cover
-      width 112px
-      height 173px
-      z-index 15
-    .bottom-shape-r
-      position absolute
-      bottom 0px
-      right 0px
-      background-image url('../assets/imgs/review_login_br.png')
-      background-size cover
-      width 140px
-      height 203px
-      z-index 15
   .login-box
     position absolute
     top -9px
