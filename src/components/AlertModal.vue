@@ -1,13 +1,11 @@
 <template lang="pug">
 mask-modal(v-model="localShow")
   .box
-    .title
-      .col {{title}}
-      .close(@click="alertResp($event, 'close')")
-    .content
-      .content-box {{msg}}
-    .bottom(@click="alertResp($event, 'confirm')")
-      .btn {{btnText}}
+    .box-inner
+      .title {{msg}}
+      .extra-bar(v-if="extraJump", @click="alertResp('$event', 'extra')") 无手机号继续查看
+      .bottom(@click="alertResp($event, 'confirm')", :style="{marginTop: extraJump ? '15px' : '45px'}")
+        .btn {{btnText}}
 </template>
 
 <script lang="ts">
@@ -23,6 +21,7 @@ class AlertModal extends Vue {
   @Prop({ default: "友情提示" }) title: string;
   @Prop({ default: "" }) msg: string;
   @Prop({ default: "确定" }) btnText: string;
+  @Prop({ default: false }) extraJump: boolean;
   localShow = false;
   @Watch("value", { immediate: true })
   changeShow(newVal: boolean) {
@@ -44,60 +43,57 @@ export default AlertModal;
 <style lang="stylus" scoped>
 .xy-modal
   .box
-    width 300px
-    height 233px
-    background-image url('../assets/imgs/alert_rect.png')
-    background-size cover
-    background-position 100% 100%
-    margin 0 auto
+    width 269px
+    height 302px
+    background #fff
     position relative
-    top calc(((100% - 233px) / 2) - 50px)
+    top calc(((100% - 302px) / 2) - 50px)
     z-index 9999
-    .title
-      position relative
-      display flex
-      align-items center
-      height 42px
-      overflow hidden
-      color #fff
-      padding-left 15px
-      font-weight 400
-      .close
-        top 3px
-        right 12px
-        position absolute
-        width 45px
-        height 21px
-        background-image url('../assets/imgs/alert_close_icon.png')
-        background-size cover
-        background-position 100% 100%
-    .content
-      height 125px
+    margin 0 auto
+    border-radius 5px
+    padding-top 39px
+    .box-inner
+      width 255px
+      min-height 270px
+      margin 0 auto
+      background-image url('../assets/imgs/alert_rect.png')
+      background-size contain
+      background-repeat no-repeat
       box-sizing border-box
-      display flex
-      align-items center
-      justify-content center
-      .content-box
-        width 240px
-        min-height 50px
-        color #262626
-        font-size 22px
-        font-weight bold
-        letter-spacing 1px
-        line-height 28px
-        max-height 125px
-        overflow hidden
-    .bottom
-      height 45px
-      .btn
+      padding-top 106px
+      .title
         margin 0 auto
-        border-radius 3px
-        height 35px
-        width 94px
-        background #6000C6
-        font-size 16px
-        display flex
-        align-items center
-        justify-content center
-        color #fff
+        width 150px
+        text-align center
+        font-size 18px
+        height 60px
+        overflow hidden
+        color #262626
+        font-weight 400
+      .extra-bar
+        width 220px
+        height 38.5px
+        margin 0 auto
+        background-image url('../assets/imgs/review_modal_info_bar.png')
+        background-size cover
+        color #4d70b5
+        text-align center
+        font-size 18px
+        padding-top 10px
+        box-sizing border-box
+      .bottom
+        margin-top 45px
+        .btn
+          margin 0 auto
+          border-radius 23px
+          height 45px
+          width 160px
+          background #6994F4
+          font-size 19px
+          font-weight bold
+          letter-spacing 2px
+          display flex
+          align-items center
+          justify-content center
+          color #fff
 </style>
