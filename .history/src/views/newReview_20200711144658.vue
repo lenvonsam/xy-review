@@ -12,7 +12,7 @@
         img.empty-monkey-right(src="../assets/imgs/monkey_right.png")
       .content-box.banner-bg
         .top-bar.row.justify-center.align-center
-          span.red-text(v-if="reviewObj.rec_goods.length > 0") 这是您关注的物资信息       
+          span.red-text.fadenum(v-if="reviewObj.rec_goods.length > 0") 这是您关注的物资信息       
         .list(v-if="reviewObj.rec_goods && reviewObj.rec_goods.length > 0")
           .item(v-for="(itm, idx) in reviewObj.rec_goods", v-if="reviewObj.rec_goods.length > 0", :key="idx")
             span {{itm.name}}
@@ -20,7 +20,7 @@
         .empty-list(v-else)
           img.title(src="../assets/imgs/empty_title.png")
           img.line(src="../assets/imgs/empty_line.png")
-          img.clickopenmall-style.fadenum(src="http://xymobile.xingyun361.com/clickopenmall.png")
+          img.clickopenmall-style(src="http://xymobile.xingyun361.com/clickopenmall.png")
           img.hand-style(src="http://xymobile.xingyun361.com/hand.png")
         .bottom.text-center
           .title
