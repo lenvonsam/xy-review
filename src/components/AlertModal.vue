@@ -3,7 +3,7 @@ mask-modal(v-model="localShow")
   .box
     .box-inner
       .title {{msg}}
-      .extra-bar(v-if="extraJump", @click="alertResp('$event', 'extra')") 无手机号继续查看
+      .extra-bar(v-if="extraJump", @click="alertResp($event, 'extra')") 无手机号继续查看
       .bottom(@click="alertResp($event, 'confirm')", :style="{marginTop: extraJump ? '15px' : '45px'}")
         .btn {{btnText}}
 </template>

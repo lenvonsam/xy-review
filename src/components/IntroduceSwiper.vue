@@ -41,17 +41,14 @@ import { Component, Vue } from "vue-property-decorator";
 
 @Component
 class IntroduceSwiper extends Vue {
-  swiperOption = {};
-
-  mounted() {
-    this.swiperOption = {
-      direction: "vertical", //水平方向移动
-      autoHeight: true, //自动高度。设置为true时，wrapper和container会随着当前slide的高度而发生变化
-      loop: true,
-      speed: 600, //config参数同swiper4,与官网一致
-      autoplay: true
-    };
-  }
+  swiperOption = {
+    effect: "fade",
+    direction: "vertical", //水平方向移动
+    autoHeight: true, //自动高度。设置为true时，wrapper和container会随着当前slide的高度而发生变化
+    autoplay: {
+      delay: 2500
+    }
+  };
 }
 export default IntroduceSwiper;
 </script>

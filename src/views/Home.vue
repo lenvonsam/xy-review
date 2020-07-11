@@ -39,7 +39,7 @@ class HomePage extends Vue {
   codeCount = 30;
   canClick = true;
   canHttp = true;
-  userAuth = false;
+  userAuth = true;
   authRequest = "0";
   exitNo = "";
   deviceRatio = 1;
@@ -133,17 +133,17 @@ class HomePage extends Vue {
   }
   async getCode() {
     try {
-      // if (!this.userAuth) {
-      //   me.$alert.show({
-      //     msg: "微信授权未成功，请重新授权",
-      //     cb() {
-      //       localStorage.removeItem("authRequest");
-      //       me.userAuth = false;
-      //       me.wxAuthUrl();
-      //     }
-      //   });
-      //   return;
-      // }
+      if (!this.userAuth) {
+        me.$alert.show({
+          msg: "微信授权未成功，请重新授权",
+          cb() {
+            localStorage.removeItem("authRequest");
+            me.userAuth = false;
+            me.wxAuthUrl();
+          }
+        });
+        return;
+      }
       if (!me.phoneReg.test(this.phone)) {
         me.$alert.show({ msg: "请输入正确手机号" });
         return;
@@ -169,23 +169,36 @@ class HomePage extends Vue {
       }
     } catch (e) {
       this.canClick = true;
-      me.$alert.show({ msg: e.message });
+      if (e.message === "该手机号未注册") {
+        me.$alert.show({
+          msg: e.message,
+          btnText: "我知道啦",
+          extraJump: true,
+          cb(resp) {
+            if (resp === "extra") {
+              window.location.replace(me.visitUrl + "#/newReview?cust_no=-1");
+            }
+          }
+        });
+      } else {
+        me.$alert.show({ msg: e.message });
+      }
     }
   }
   async loginAction() {
     try {
       me.iosAdaptor();
-      // if (!this.userAuth) {
-      //   me.$alert.show({
-      //     msg: "微信授权未成功，请重新授权",
-      //     cb() {
-      //       localStorage.removeItem("authRequest");
-      //       me.userAuth = false;
-      //       me.wxAuthUrl();
-      //     }
-      //   });
-      //   return;
-      // }
+      if (!this.userAuth) {
+        me.$alert.show({
+          msg: "微信授权未成功，请重新授权",
+          cb() {
+            localStorage.removeItem("authRequest");
+            me.userAuth = false;
+            me.wxAuthUrl();
+          }
+        });
+        return;
+      }
       if (!me.phoneReg.test(this.phone)) {
         me.$alert.show({ msg: "请输入正确手机号" });
         return;
@@ -307,7 +320,7 @@ export default HomePage;
     -webkit-box-sizing border-box
     -moz-box-sizing border-box
     animation-delay 0.3s
-    animation-duration 5s
+    animation-duration 4s
     padding-top 10%
     padding-left 10%
     padding-right 10%

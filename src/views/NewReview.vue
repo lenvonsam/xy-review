@@ -30,162 +30,163 @@
           img.qrcode.animated.fadeIn(src="../assets/imgs/qrcode.jpg", style="animation-duration: 1.5s; animation-delay: 1s")
           .mt-5(style="font-size:10px; color: #504E49") 微信扫码体验型云小程序
   swiper.swipper.full-width(:options="swiperOption", ref="xySwiper", @slideChange="slideTouchChange", v-else) 
-    swiper-slide(v-show="custNo")
-      .banner-bg.border-box.full-width.padding-xl.relative.part-sec(:style="{height: screenHeight + 'px'}", :class="[keyBkg(reviewObj.key_flag)]")
-        .mt-15.text-white(class="animated bounceInRight") 买钢不只有钢市的波澜与壮阔
-        .mt-15.text-white(class="animated bounceInRight") 还有使用型云的便捷与放心
-        .row.align-center.mt-15
-          div.text-white(class="animated bounceInRight") 您本季度的钢圈关键词为：
-          .text-bold.text-center.text-animate.mr-5.ml-5.text-yellow.fs-25(class="animated bounceInLeft") {{keyFlag(reviewObj.key_flag)}}
-        div(v-if="reviewObj.key_flag == 1")
-          .mt-15.text-white(class="animated bounceInRight") 采钢万钧
-          .mt-15.text-white(class="animated bounceInRight") 富可敌国
-        div(v-if="reviewObj.key_flag == 2")
-          .mt-15.text-white(class="animated bounceInRight") 你来我往
-          .mt-15.text-white(class="animated bounceInRight") 有条不紊
-        div(v-if="reviewObj.key_flag == 3")
-          .mt-15.text-white(class="animated bounceInRight") 驷马难追
-          .mt-15.text-white(class="animated bounceInRight") 唯快不破
-        div(v-if="reviewObj.key_flag == 4")
-          .mt-15.text-white(class="animated bounceInRight") 高瞻远瞩
-          .mt-15.text-white(class="animated bounceInRight") 卓尔不群
-        .row.mt-15.align-center.text-white
-          div(class="animated bounceInRight") 购钢总量超过
-          .text-bold.text-animate.text-center.mr-5.ml-5.text-yellow.fs-25(class="animated bounceInLeft") {{parseInt(reviewObj.all_weight_percent)}}%
-          .text-center(class="animated bounceInRight") 的客户
-        div(v-if="reviewObj.key_flag == 1")
-          img.fu1-style(src="http://xymobile.xingyun361.com/fu1.png")
-          img.fu2-style(src="../assets/imgs/fu2.png")
-          img.fu3-style(src="http://xymobile.xingyun361.com/fu3.png")
-        div(v-if="reviewObj.key_flag == 2")
-          img.wen1-style(src="http://xymobile.xingyun361.com/wen1.png")
-          img.wen2-style(src="http://xymobile.xingyun361.com/wen2.png")
-          img.wen3-style(src="http://xymobile.xingyun361.com/wen3.png")
-        div(v-if="reviewObj.key_flag == 3")
-          img.shuang1-style(src="http://xymobile.xingyun361.com/shuang1.png")
-        div(v-if="reviewObj.key_flag == 4")
-          img.lang2-style(src="http://xymobile.xingyun361.com/lang2.png")
-          img.lang1-style(src="http://xymobile.xingyun361.com/lang1.png")
-      .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")       
-    
-    swiper-slide(v-show="custNo")
-      .banner-bg.border-box.full-width.pt-2rem.padding-xl.slide-sec-bg.relative(:style="{height: screenHeight + 'px'}")
-        div.mt-10.text-white 在过去的2020年二季度中
-        .row.mt-10.align-center
-          div.text-white 您在型云一共采购了
-          .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{reviewObj.all_weight.toFixed(2)}}
-          .col.text-white 吨钢材
-        .row.mt-10.align-center
-          div.text-white 其中
-          .text-yellow.text-center.ml-5.mr-5(class="animated bounceInLeft") {{reviewObj.goods_name_one}}
-          .col.text-white 为您主要的采购品种
-        .mt-10.text-white 为疫情过后祖国的经济复苏
-        .mt-10.text-white 贡献了自己的力量！ 
-        .mt-10
-          .charts-style(class="animated slideInUp", ref="chartPie")
-        img.chartsPage1-style(src="http://xymobile.xingyun361.com/chartsPage1.png")
-        img.chartsPage4-style(src="http://xymobile.xingyun361.com/chartsPage4.png")
-        img.chartsPage2-style(src="http://xymobile.xingyun361.com/chartsPageCloud1.png")
-        img.chartsPage3-style(src="http://xymobile.xingyun361.com/chartsPageCloud2.png")
-      .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")
-    swiper-slide(v-show="custNo")
-      .banner-bg.border-box.full-width.pt-2rem.padding-xl.slide-third-bg.relative(:style="{height: screenHeight + 'px'}")
-        .row.mt-10.align-center
-          div.text-white 本季度中您一共在型云搜索了
-          .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{reviewObj.search_count}}
-          .col.text-white 次
-        .row.mt-10.align-center
-          div.text-white 其中
-          .text-yellow.text-center.ml-5.mr-5(class="animated bounceInLeft") {{reviewObj.search_content[0]}}
-          .col.text-white 是您搜索最多的品类
-        .row.mt-10.align-center
-          div.text-white 有
-          .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{cartPercent}}
-          .col.text-white 成功进入到了您的购物车中                           
-        .mt-10.text-white 众里寻他千百度
-        div.mt-20
-          div(v-if="showBtn == 'true'")
-            .text-white.text-center 型云帮你找到理想中的物资了吗？
-            .row.mt-15.text-center
-              div.margin-auto.text-white
-                label
-                  input(type="radio", name="inputRadio", v-model="getGood", value="1")
-                  span.ml-8 是
-                label.ml-23
-                  input(type="radio", name="inputRadio", v-model="getGood", value="0")
-                  span.ml-8 否
-            .row.mt-20
-              button.submit-btn(type='submit', @click="submitGood") 确定
-        .mt-26.relation-bkg
-          .first-frame
-            .goods-first {{goodsList[0]}}
-          .second-frame
-            .goods-second {{goodsList[1]}}
-          .third-frame
-            .goods-third {{goodsList[2]}}
-          .forth-frame
-            .goods-forth {{goodsList[3]}}
-          .fifth-frame
-            .goods-fifth {{goodsList[4]}}
-          .sixth-frame
-            .goods-sixth {{goodsList[5]}}
-          .seventh-frame
-            .goods-seventh {{goodsList[6]}}
-          .eighth-frame
-            .goods-eighth {{goodsList[7]}}
-      .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")
-    swiper-slide(v-show="custNo")
-      .banner-bg.border-box.full-width.padding-xl.slide-forth-bg.relative(:style="{height: screenHeight + 'px'}", :class="[getWindow(reviewObj.page_backgroup)]")
-        .row.mt-15.align-center.text-white
-          div(class="animated bounceInRight") 您一共成交了
-          .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{reviewObj.order_num}}
-          .col.text-white(class="animated bounceInRight") 笔订单
-        .row.mt-10.align-center.text-white
-          div(class="animated bounceInRight") 我们的业务员为您提供了
-          .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{reviewObj.dx_num}}
-          .col.text-white(class="animated bounceInRight") 笔定向开单服务
-        .row.mt-10.align-center.text-white
-          div(class="animated bounceInRight") 您总是习惯在
-          .text-animate.text-center.mr-5.ml-5.text-yellow(class="animated bounceInLeft") {{xdTime}}
-          .col.text-white(class="animated bounceInRight") 的时候下单
-        .row.mt-10.align-center.text-white
-          div(class="animated bounceInRight") 型云一共为您节约了
-          .text-animate.text-center.mr-5.ml-5.text-yellow(class="animated bounceInLeft") {{reviewObj.save_time}}
-          .col.text-white(class="animated bounceInRight") 分钟的下单时间
-        .mt-10.text-white(class="animated bounceInRight") 您可以利用这些时间
-        .row.mt-10.align-center.text-white
-          div(v-if="[getRelase(reviewObj.save_time)] == 'movie'", class="animated bounceInRight") 多看
-          div(v-else, class="animated bounceInRight") 多听
-          .text-animate.text-center.mr-5.ml-5.text-yellow(class="animated bounceInLeft") {{relaseNum}}
-          .col.text-white(v-if="[getRelase(reviewObj.save_time)] == 'movie'", class="animated bounceInRight") 场精彩的电影
-          .col.text-white(v-else, class="animated bounceInRight") 首美妙的歌曲
-        .mt-10.text-white(class="animated bounceInRight") 更多的陪伴家人
-        .mt-10.text-white(class="animated bounceInRight") 与朋友分享自己的快乐
-        .page4movie-style(:class="[getRelase(reviewObj.save_time)]")
-      .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")
-    swiper-slide(v-show="custNo")
-      .banner-bg.box.full-width.relative.slide-fifth-bg.relative(:style="{height: screenHeight + 'px'}")
-        .slide-fifth-book.banner-bg
-          div.content-style.ff-zwj.fs-13
-            .mt-15 没有了电话里的讨价还价
-            .mt-10 没有了到处比价的捉摸不定
-            .row.mt-10.align-center
-              div 有的只是您下单时
-              .circle-bkg
-                .text-red.title.lh-33(class="animated bounceInLeft") {{chName}}
-              .col 的气势
-            .mt-10 不忘采购的初心，更不负挣钱的韶华
-            .mt-10 型云心目中2020年第二季度的 
-            .row.mt-10.align-center
-              .circle-bkg             
-                .text-red.title.lh-33(class="animated bounceInLeft") {{titleInfo(reviewObj.all_weight)}}
-              .col 非你莫属!
-        img.wodegangquan-style(src="http://xymobile.xingyun361.com/wodegangquan.png")
-        img.rubber-style(src="http://xymobile.xingyun361.com/rubber.png")
-        img.pencil-style(src="http://xymobile.xingyun361.com/pencil.png")
-      .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")   
+    template(v-if="custNo != '-1'")
+      swiper-slide(v-show="custNo")
+        .banner-bg.border-box.full-width.padding-xl.relative.part-sec(:style="{height: screenHeight + 'px'}", :class="[keyBkg(reviewObj.key_flag)]")
+          .mt-15.text-white(class="animated bounceInRight") 买钢不只有钢市的波澜与壮阔
+          .mt-15.text-white(class="animated bounceInRight") 还有使用型云的便捷与放心
+          .row.align-center.mt-15
+            div.text-white(class="animated bounceInRight") 您本季度的钢圈关键词为：
+            .text-bold.text-center.text-animate.mr-5.ml-5.text-yellow.fs-25(class="animated bounceInLeft") {{keyFlag(reviewObj.key_flag)}}
+          div(v-if="reviewObj.key_flag == 1")
+            .mt-15.text-white(class="animated bounceInRight") 采钢万钧
+            .mt-15.text-white(class="animated bounceInRight") 富可敌国
+          div(v-if="reviewObj.key_flag == 2")
+            .mt-15.text-white(class="animated bounceInRight") 你来我往
+            .mt-15.text-white(class="animated bounceInRight") 有条不紊
+          div(v-if="reviewObj.key_flag == 3")
+            .mt-15.text-white(class="animated bounceInRight") 驷马难追
+            .mt-15.text-white(class="animated bounceInRight") 唯快不破
+          div(v-if="reviewObj.key_flag == 4")
+            .mt-15.text-white(class="animated bounceInRight") 高瞻远瞩
+            .mt-15.text-white(class="animated bounceInRight") 卓尔不群
+          .row.mt-15.align-center.text-white
+            div(class="animated bounceInRight") 购钢总量超过
+            .text-bold.text-animate.text-center.mr-5.ml-5.text-yellow.fs-25(class="animated bounceInLeft") {{parseInt(reviewObj.all_weight_percent)}}%
+            .text-center(class="animated bounceInRight") 的客户
+          div(v-if="reviewObj.key_flag == 1")
+            img.fu1-style(src="http://xymobile.xingyun361.com/fu1.png")
+            img.fu2-style(src="../assets/imgs/fu2.png")
+            img.fu3-style(src="http://xymobile.xingyun361.com/fu3.png")
+          div(v-if="reviewObj.key_flag == 2")
+            img.wen1-style(src="http://xymobile.xingyun361.com/wen1.png")
+            img.wen2-style(src="http://xymobile.xingyun361.com/wen2.png")
+            img.wen3-style(src="http://xymobile.xingyun361.com/wen3.png")
+          div(v-if="reviewObj.key_flag == 3")
+            img.shuang1-style(src="http://xymobile.xingyun361.com/shuang1.png")
+          div(v-if="reviewObj.key_flag == 4")
+            img.lang2-style(src="http://xymobile.xingyun361.com/lang2.png")
+            img.lang1-style(src="http://xymobile.xingyun361.com/lang1.png")
+        .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")       
+      
+      swiper-slide(v-show="custNo")
+        .banner-bg.border-box.full-width.pt-2rem.padding-xl.slide-sec-bg.relative(:style="{height: screenHeight + 'px'}")
+          div.mt-10.text-white 在过去的2020年二季度中
+          .row.mt-10.align-center
+            div.text-white 您在型云一共采购了
+            .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{reviewObj.all_weight.toFixed(2)}}
+            .col.text-white 吨钢材
+          .row.mt-10.align-center
+            div.text-white 其中
+            .text-yellow.text-center.ml-5.mr-5(class="animated bounceInLeft") {{reviewObj.goods_name_one}}
+            .col.text-white 为您主要的采购品种
+          .mt-10.text-white 为疫情过后祖国的经济复苏
+          .mt-10.text-white 贡献了自己的力量！ 
+          .mt-10
+            .charts-style(class="animated slideInUp", ref="chartPie")
+          img.chartsPage1-style(src="http://xymobile.xingyun361.com/chartsPage1.png")
+          img.chartsPage4-style(src="http://xymobile.xingyun361.com/chartsPage4.png")
+          img.chartsPage2-style(src="http://xymobile.xingyun361.com/chartsPageCloud1.png")
+          img.chartsPage3-style(src="http://xymobile.xingyun361.com/chartsPageCloud2.png")
+        .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")
+      swiper-slide(v-show="custNo")
+        .banner-bg.border-box.full-width.pt-2rem.padding-xl.slide-third-bg.relative(:style="{height: screenHeight + 'px'}")
+          .row.mt-10.align-center
+            div.text-white 本季度中您一共在型云搜索了
+            .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{reviewObj.search_count}}
+            .col.text-white 次
+          .row.mt-10.align-center
+            div.text-white 其中
+            .text-yellow.text-center.ml-5.mr-5(class="animated bounceInLeft") {{reviewObj.search_content[0]}}
+            .col.text-white 是您搜索最多的品类
+          .row.mt-10.align-center
+            div.text-white 有
+            .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{cartPercent}}
+            .col.text-white 成功进入到了您的购物车中                           
+          .mt-10.text-white 众里寻他千百度
+          div.mt-20
+            div(v-if="showBtn == 'true'")
+              .text-white.text-center 型云帮你找到理想中的物资了吗？
+              .row.mt-15.text-center
+                div.margin-auto.text-white
+                  label
+                    input(type="radio", name="inputRadio", v-model="getGood", value="1")
+                    span.ml-8 是
+                  label.ml-23
+                    input(type="radio", name="inputRadio", v-model="getGood", value="0")
+                    span.ml-8 否
+              .row.mt-20
+                button.submit-btn(type='submit', @click="submitGood") 确定
+          .mt-26.relation-bkg
+            .first-frame
+              .goods-first {{goodsList[0]}}
+            .second-frame
+              .goods-second {{goodsList[1]}}
+            .third-frame 
+              .goods-third {{goodsList[2]}}
+            .forth-frame
+              .goods-forth {{goodsList[3]}}
+            .fifth-frame
+              .goods-fifth {{goodsList[4]}}
+            .sixth-frame
+              .goods-sixth {{goodsList[5]}}
+            .seventh-frame
+              .goods-seventh {{goodsList[6]}}
+            .eighth-frame
+              .goods-eighth {{goodsList[7]}}
+        .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")
+      swiper-slide(v-show="custNo")
+        .banner-bg.border-box.full-width.padding-xl.slide-forth-bg.relative(:style="{height: screenHeight + 'px'}", :class="[getWindow(reviewObj.page_backgroup)]")
+          .row.mt-15.align-center.text-white
+            div(class="animated bounceInRight") 您一共成交了
+            .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{reviewObj.order_num}}
+            .col.text-white(class="animated bounceInRight") 笔订单
+          .row.mt-10.align-center.text-white
+            div(class="animated bounceInRight") 我们的业务员为您提供了
+            .text-yellow.text-animate.mr-5.ml-5(class="animated bounceInLeft") {{reviewObj.dx_num}}
+            .col.text-white(class="animated bounceInRight") 笔定向开单服务
+          .row.mt-10.align-center.text-white
+            div(class="animated bounceInRight") 您总是习惯在
+            .text-animate.text-center.mr-5.ml-5.text-yellow(class="animated bounceInLeft") {{xdTime}}
+            .col.text-white(class="animated bounceInRight") 的时候下单
+          .row.mt-10.align-center.text-white
+            div(class="animated bounceInRight") 型云一共为您节约了
+            .text-animate.text-center.mr-5.ml-5.text-yellow(class="animated bounceInLeft") {{reviewObj.save_time}}
+            .col.text-white(class="animated bounceInRight") 分钟的下单时间
+          .mt-10.text-white(class="animated bounceInRight") 您可以利用这些时间
+          .row.mt-10.align-center.text-white
+            div(v-if="[getRelase(reviewObj.save_time)] == 'movie'", class="animated bounceInRight") 多看
+            div(v-else, class="animated bounceInRight") 多听
+            .text-animate.text-center.mr-5.ml-5.text-yellow(class="animated bounceInLeft") {{relaseNum}}
+            .col.text-white(v-if="[getRelase(reviewObj.save_time)] == 'movie'", class="animated bounceInRight") 场精彩的电影
+            .col.text-white(v-else, class="animated bounceInRight") 首美妙的歌曲
+          .mt-10.text-white(class="animated bounceInRight") 更多的陪伴家人
+          .mt-10.text-white(class="animated bounceInRight") 与朋友分享自己的快乐
+          .page4movie-style(:class="[getRelase(reviewObj.save_time)]")
+        .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")
+      swiper-slide(v-show="custNo")
+        .banner-bg.box.full-width.relative.slide-fifth-bg.relative(:style="{height: screenHeight + 'px'}")
+          .slide-fifth-book.banner-bg
+            div.content-style.ff-zwj.fs-13
+              .mt-15 没有了电话里的讨价还价
+              .mt-10 没有了到处比价的捉摸不定
+              .row.mt-10.align-center
+                div 有的只是您下单时
+                .circle-bkg
+                  .text-red.title.lh-33(class="animated bounceInLeft") {{chName}}
+                .col 的气势
+              .mt-10 不忘采购的初心，更不负挣钱的韶华
+              .mt-10 型云心目中2020年第二季度的 
+              .row.mt-10.align-center
+                .circle-bkg             
+                  .text-red.title.lh-33(class="animated bounceInLeft") {{titleInfo(reviewObj.all_weight)}}
+                .col 非你莫属!
+          img.wodegangquan-style(src="http://xymobile.xingyun361.com/wodegangquan.png")
+          img.rubber-style(src="http://xymobile.xingyun361.com/rubber.png")
+          img.pencil-style(src="http://xymobile.xingyun361.com/pencil.png")
+        .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")   
     swiper-slide
-      IntroduceSwiper
+      IntroduceSwiper(v-if="(swiperSildeIndex == 5 && custNo !== '-1') || (swiperSildeIndex == 0 && custNo == '-1')")
       .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s;z-index: 999")
     swiper-slide
       .banner-bg.box.full-width.relative.slide-join-bg.relative(:style="{height: screenHeight + 'px'}")
@@ -193,18 +194,6 @@
         .slogan-btn.fs-9.lh-17.ls-6 汇智成型 聚气为云
         //- .mt-26.chinese-style(class="animated bounceInRight") 我们诚邀
         //- .english-style(class="animated bounceInRight") We sincerely invitel
-        div.mt-20(style="display: flex;flex-direction: column;")
-          div.margin-auto(style="display: flex;flex-direction: row;")
-            .skew-frame
-              div
-                .row.mt-15.align-center.fs-13.text-bold 金融服务
-                .row.mt-15.align-center.fs-9 服务中小微
-                .row.mt-15.align-center.fs-9 成就大未来
-            .skew-frame.ml-54
-              div
-                .row.mt-15.align-center.fs-13.text-bold 加工服务
-                .row.mt-15.align-center.fs-9 展现一场钢铁加工的              
-                .row.mt-15.align-center.fs-9 艺术之旅
           //- div.margin-10l
           //-   .skew-frame
           //-     div
@@ -236,6 +225,18 @@
                 input.checkbox-style(type="radio", v-model="picked", :value="radio.id")
                 span.text-white.fs-13.lh-33.ml-2 {{radio.name}}
           button.comfirm-btn(@click="submintInfor()") 确认
+        //- div.mt-20(style="display: flex;flex-direction: column;")
+          div.margin-auto(style="display: flex;flex-direction: row;")
+            .skew-frame
+              div
+                .row.mt-15.align-center.fs-13.text-bold 金融服务
+                .row.mt-15.align-center.fs-9 服务中小微
+                .row.mt-15.align-center.fs-9 成就大未来
+            .skew-frame.ml-54
+              div
+                .row.mt-15.align-center.fs-13.text-bold 加工服务
+                .row.mt-15.align-center.fs-9 展现一场钢铁加工的              
+                .row.mt-15.align-center.fs-9 艺术之旅
       .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")
     swiper-slide(v-show="custNo")
       .banner-bg.box.full-width.relative.slide-keyword-bg.relative(:style="{height: screenHeight + 'px'}", :class="[keyBkg(reviewObj.key_flag)]")
@@ -348,10 +349,11 @@ class NewReviewPage extends Vue {
 
   beforeMount() {
     self = this;
+    self.initWxConfig();
     if (self.$route.query.cust_no) {
       self.custNo = self.$route.query.cust_no;
     }
-    if (self.custNo) {
+    if (self.custNo && self.custNo !== "-1") {
       self.loadData();
       if (localStorage.getItem("showBtn")) {
         this.showBtn = localStorage.getItem("showBtn");
@@ -360,10 +362,47 @@ class NewReviewPage extends Vue {
       }
       localStorage.setItem("showBtn", this.showBtn);
     }
+    if (self.custNo === "-1") this.reviewObj["all_weight"] = -1
   }
-  mounted() {
-    // this.$nextTick(() => {});
-    // self = this;
+  initWxConfig() {
+    if (self.browserName() === "wxpub") {
+      self.initWxJs()
+        .then(wx => {
+          console.log("wx:>>", wx);
+          wx.onMenuShareTimeline({
+            title: self.wxShareTitle,
+            link: self.visitUrl + "?source=3",
+            imgUrl: "http://xymobile.xingyun361.com/share_review_icon.jpg",
+            success() {
+              console.log("wx share success");
+            },
+            error() {
+              console.log("wx share fail");
+            }
+          });
+          if (self.custNo != "-1") {
+            self.wxShareDesc =
+              "2020第二季度我在型云的光荣称号是" +
+              self.titleInfo(self.reviewObj.all_weight) +
+              "，点击查看属于自己的钢圈称号吧！";
+            wx.onMenuShareAppMessage({
+              title: self.wxShareTitle,
+              desc: self.wxShareDesc,
+              link: self.visitUrl + "?source=3",
+              imgUrl: "http://xymobile.xingyun361.com/share_review_icon.jpg",
+              success() {
+                console.log("wx share success");
+              },
+              error() {
+                console.log("wx share fail");
+              }
+            });
+          }
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    }
   }
   clearData() {
     // 测试环境清空数据
@@ -395,7 +434,7 @@ class NewReviewPage extends Vue {
             value: leftWeight,
             name: "其他"
           });
-          if (self.reviewObj.weight_one) {
+          if (self.reviewObj.weight_two) {
             leftWeight =
               self.reviewObj.all_weight -
               self.reviewObj.weight_one -
@@ -500,14 +539,14 @@ class NewReviewPage extends Vue {
     }
   }
   slideTouchChange() {
-    const slideIndex = this.$refs.xySwiper.$swiper.activeIndex;
+    const slideIndex = self.$refs.xySwiper.$swiper.activeIndex;
     console.log("slide Index:>>", slideIndex);
     console.log("currentIndex:>>", this.swiperSildeIndex);
     if (this.swiperSildeIndex !== slideIndex) {
       this.swiperSildeIndex = slideIndex;
       console.log("swiperSlideIndex:>>", this.swiperSildeIndex);
     }
-    if (this.custNo) {
+    if (this.custNo !== "-1") {
       // if (this.reviewObj.all_weight > 0) {
       //   if (this.swiperSildeIndex == 1) {
       //     this.setChart();
@@ -517,7 +556,7 @@ class NewReviewPage extends Vue {
         this.modalShow = true;
       }
     } else {
-      if (this.swiperSildeIndex == 2) {
+      if (this.swiperSildeIndex == 1) {
         this.modalShow = true;
       }
     }
@@ -654,38 +693,50 @@ class NewReviewPage extends Vue {
   }
   async submitGood() {
     console.log(this.getGood);
-    const param = {
-      custNo: this.custNo,
-      confirm: this.getGood
-    };
-    const data = await self.ironRequest(
-      "promote/cartConfirm.shtml?",
-      param,
-      "post"
-    );
-    if (data.returncode == 0) {
-      this.$alert.show({ msg: "提交成功！" });
-      localStorage.setItem("showBtn", "false");
-      this.showBtn = "false";
+    if (this.getGood.length > 0) {
+      const param = {
+        custNo: this.custNo,
+        confirm: this.getGood
+      };
+      const data = await self.ironRequest(
+        "promote/cartConfirm.shtml?",
+        param,
+        "post"
+      );
+      if (data.returncode == 0) {
+        self.$alert.show({ msg: "提交成功！" });
+        localStorage.setItem("showBtn", "false");
+        this.showBtn = "false";
+      }
     }
   }
   async submintInfor() {
     console.log(this.picked);
-    const compName = this.$refs.compName.value;
-    const phoneNum = this.$refs.phoneNum.value;
-    const param = {
-      custNo: this.custNo,
-      custName: compName,
-      phone: phoneNum,
-      type: this.picked
-    };
-    const data = await self.ironRequest(
-      "promote/feedback.shtml?",
-      param,
-      "post"
-    );
-    if (data.returncode == 0) {
-      this.$alert.show({ msg: "加盟成功！" });
+    const compName = self.$refs.compName.value;
+    const phoneNum = self.$refs.phoneNum.value;
+    if (compName.trim().length === 0) {
+      self.$alert.show({ msg: "公司名称不能为空" })
+    } else if (phoneNum.trim().length === 0) {
+      self.$alert.show({ msg: "联系电话不能为空" })
+    } else if (this.picked == "") {
+      self.$alert.show({ msg: "请选择经营性质" })
+    } else {
+      const param = {
+        custName: compName,
+        phone: phoneNum,
+        type: this.picked
+      };
+      if (this.custNo !== "-1") {
+        param["custNo"] = this.custNo
+      }
+      const data = await self.ironRequest(
+        "promote/feedback.shtml?",
+        param,
+        "post"
+      );
+      if (data.returncode == 0) {
+        self.$alert.show({ msg: "加盟成功！" });
+      }
     }
   }
 }
@@ -1007,8 +1058,8 @@ vm(val)
       display table-cell
       vertical-align middle
   .eighth-frame
-    width vm(30)
-    height vm(30)
+    width vm(35)
+    height vm(35)
     position absolute
     left vm(190)
     top vm(195)
@@ -1113,7 +1164,7 @@ vm(val)
         background -webkit-image-set(url('http://xymobile.xingyun361.com/keywordwencenter.png') 1x)
         background-size cover
       &.third
-        background -webkit-image-set(url('http://xymobile.xingyun361.com/keywordshaungcenter.png') 1x)
+        background -webkit-image-set(url('http://xymobile.xingyun361.com/keywordshuangcenter.png') 1x)
         background-size cover
       &.forth
         background -webkit-image-set(url('http://xymobile.xingyun361.com/keywordlangcenter.png') 1x)
@@ -1326,7 +1377,7 @@ vm(val)
   .comfirm-btn
     width vm(142)
     height vm(37)
-    margin vm(15) auto
+    margin vm(10) auto
     background rgba(255, 217, 70, 1)
     border 0
     border-radius 2px
