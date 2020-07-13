@@ -20,7 +20,7 @@
         .empty-list(v-else)
           img.title(src="../assets/imgs/empty_title.png")
           img.line(src="../assets/imgs/empty_line.png")
-          img.clickopenmall-style.fadenum(src="http://xymobile.xingyun361.com/clickopenmall.png")
+          //- img.clickopenmall-style.fadenum(src="http://xymobile.xingyun361.com/clickopenmall.png")
           img.hand-style(src="http://xymobile.xingyun361.com/hand.png")
         .bottom.text-center
           .title
@@ -89,7 +89,7 @@
           img.chartsPage2-style(src="http://xymobile.xingyun361.com/chartsPageCloud1.png")
           img.chartsPage3-style(src="http://xymobile.xingyun361.com/chartsPageCloud2.png")
         .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")
-      swiper-slide(v-show="custNo")
+      swiper-slide(v-show="custNo && reviewObj.search_content.length > 0")
         .banner-bg.border-box.full-width.pt-2rem.padding-xl.slide-third-bg.relative(:style="{height: screenHeight + 'px'}")
           .row.mt-10.align-center
             div.text-white 本季度中您一共在型云搜索了
@@ -97,7 +97,7 @@
             .col.text-white 次
           .row.mt-10.align-center
             div.text-white 其中
-            .text-yellow.text-center.ml-5.mr-5(class="animated bounceInLeft") {{reviewObj.search_content[0]}}
+            .text-yellow.text-center.ml-5.mr-5(class="animated bounceInLeft", v-if="reviewObj.search_content.length > 0") {{reviewObj.search_content[0]}}
             .col.text-white 是您搜索最多的品类
           .row.mt-10.align-center
             div.text-white 有
@@ -117,7 +117,7 @@
                     span.ml-8 否
               .row.mt-20
                 button.submit-btn(type='submit', @click="submitGood") 确定
-          .mt-26.relation-bkg
+          .mt-26.relation-bkg(v-if="goodsList.length > 0")
             .first-frame
               .goods-first {{goodsList[0]}}
             .second-frame
@@ -186,7 +186,10 @@
           img.pencil-style(src="http://xymobile.xingyun361.com/pencil.png")
         .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")   
     swiper-slide
-      IntroduceSwiper(v-if="(swiperSildeIndex == 5 && custNo !== '-1') || (swiperSildeIndex == 0 && custNo == '-1')")
+      template(v-if="mobileVersion() === 'ios'")
+        .banner-bg.box.full-width.relative.slide-introduce-bg-ios.relative(:style="{height: screenHeight + 'px'}")
+      template(v-else)
+        IntroduceSwiper
       .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s;z-index: 999")
     swiper-slide
       .banner-bg.box.full-width.relative.slide-join-bg.relative(:style="{height: screenHeight + 'px'}")
@@ -216,9 +219,9 @@
         .mt-20(style="display: flex;flex-direction: column;")
           .ml-28
             .formword-style.text-bold 公司名称
-            input(placeHolder="请输入公司名称", ref="compName")
+            input.pl-10(placeHolder="请输入公司名称", ref="compName", @blur="autoScroll")
             .formword-style.text-bold 联系电话
-            input(placeHolder="请输入联系电话", ref="phoneNum")
+            input.pl-10(placeHolder="请输入联系电话", type="tel", ref="phoneNum", v-model="phoneInput")
             .formword-style.text-bold 经营性质
             div.ml-23l(style="display: flex;flex-direction: row;")
               label.ml-23(v-for="radio,index in radioGroup", :key="index",style="display: flex;flex-direction: row;position:relative")
@@ -238,7 +241,7 @@
                 .row.mt-15.align-center.fs-9 展现一场钢铁加工的              
                 .row.mt-15.align-center.fs-9 艺术之旅
       .black.arrow.banner-bg.animated.infinite.zoomIn(style="animation-duration: 2s")
-    swiper-slide(v-show="custNo")
+    swiper-slide(v-if="custNo != '-1'")
       .banner-bg.box.full-width.relative.slide-keyword-bg.relative(:style="{height: screenHeight + 'px'}", :class="[keyBkg(reviewObj.key_flag)]")
         div.frame-style
           .keywordCenter-style(:class="[keyBkg(reviewObj.key_flag)]")
@@ -247,15 +250,15 @@
           div(v-if="reviewObj.key_flag == 1")
             .fs-16.text-center(class="animated bounceInRight") 采钢万钧
             .fs-16.text-center(class="animated bounceInRight") 富可敌国
-            .fs-16.text-center(class="animated bounceInRight") 购钢总量超过{{reviewObj.all_weight_percent}}%的客户！
+            .fs-16.text-center(class="animated bounceInRight") 购钢总量超过{{parseInt(reviewObj.all_weight_percent)}}%的客户！
           div(v-if="reviewObj.key_flag == 2")
             .fs-16.text-center(class="animated bounceInRight") 你来我往
             .fs-16.text-center(class="animated bounceInRight") 有条不紊
-            .fs-16.text-center(class="animated bounceInRight") 极速付款超过{{reviewObj.all_weight_percent}}%的客户！
+            .fs-16.text-center(class="animated bounceInRight") 极速付款超过{{parseInt(reviewObj.all_weight_percent)}}%的客户！
           div(v-if="reviewObj.key_flag == 3")
             .fs-16.text-center(class="animated bounceInRight") 驷马难追
             .fs-16.text-center(class="animated bounceInRight") 唯快不破
-            .fs-16.text-center(class="animated bounceInRight") 采购频率超过{{reviewObj.all_weight_percent}}%的客户！
+            .fs-16.text-center(class="animated bounceInRight") 采购频率超过{{parseInt(reviewObj.all_weight_percent)}}%的客户！
           div(v-if="reviewObj.key_flag == 4")
             .fs-16.text-center(class="animated bounceInRight") 高瞻远瞩
             .fs-16.text-center(class="animated bounceInRight") 卓尔不群
@@ -270,7 +273,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import echarts from "echarts";
 import IntroduceSwiper from "../components/IntroduceSwiper.vue";
 import music from "@/components/Music.vue";
@@ -287,7 +290,7 @@ let self: any;
 class NewReviewPage extends Vue {
   echarts: any = echarts;
   custNo = "";
-  reviewObj = {};
+  reviewObj: any = {};
   swiperOption = {
     direction: "vertical",
     effect: "coverflow",
@@ -302,6 +305,7 @@ class NewReviewPage extends Vue {
       slideShadows: true
     }
   };
+  phoneInput = "";
   slideOneAnimateOne = "";
   slideOneAnimateTwo = "";
   bottomImgOneHeight = 246;
@@ -346,10 +350,12 @@ class NewReviewPage extends Vue {
   goodsList = [];
   chName = "";
   showBtn = "true";
+  btnClick = true;
 
   beforeMount() {
     self = this;
     self.initWxConfig();
+    console.log("ios:>>", self.mobileVersion());
     if (self.$route.query.cust_no) {
       self.custNo = self.$route.query.cust_no;
     }
@@ -362,11 +368,16 @@ class NewReviewPage extends Vue {
       }
       localStorage.setItem("showBtn", this.showBtn);
     }
-    if (self.custNo === "-1") this.reviewObj["all_weight"] = -1
+    if (self.custNo === "-1") this.reviewObj["all_weight"] = -1;
+  }
+  @Watch("phoneInput")
+  onPhoneInputChange() {
+    this.autoScroll();
   }
   initWxConfig() {
     if (self.browserName() === "wxpub") {
-      self.initWxJs()
+      self
+        .initWxJs()
         .then(wx => {
           console.log("wx:>>", wx);
           wx.onMenuShareTimeline({
@@ -382,9 +393,9 @@ class NewReviewPage extends Vue {
           });
           if (self.custNo != "-1") {
             self.wxShareDesc =
-              "2020第二季度我在型云的光荣称号是" +
+              "2020第二季度我在型云的采钢关键字是" +
               self.titleInfo(self.reviewObj.all_weight) +
-              "，点击查看属于自己的钢圈称号吧！";
+              "，点击查看属于自己的关键字吧！";
             wx.onMenuShareAppMessage({
               title: self.wxShareTitle,
               desc: self.wxShareDesc,
@@ -430,10 +441,12 @@ class NewReviewPage extends Vue {
             value: self.reviewObj.weight_one,
             name: self.reviewObj.goods_name_one
           });
-          self.chartData.push({
-            value: leftWeight,
-            name: "其他"
-          });
+          if (leftWeight > 0) {
+            self.chartData.push({
+              value: leftWeight,
+              name: "其他"
+            });
+          }
           if (self.reviewObj.weight_two) {
             leftWeight =
               self.reviewObj.all_weight -
@@ -443,11 +456,17 @@ class NewReviewPage extends Vue {
               value: self.reviewObj.weight_two,
               name: self.reviewObj.goods_name_two
             });
-            self.chartData.map(item => {
-              if (item.name == "其他") {
-                item.value = leftWeight;
-              }
-            });
+            if (leftWeight > 0) {
+              self.chartData.map(item => {
+                if (item.name == "其他") {
+                  item.value = leftWeight;
+                }
+              });
+            } else {
+              self.chartData = self.chartData.filter(
+                item => item.name !== "其他"
+              );
+            }
             if (self.reviewObj.weight_three) {
               leftWeight =
                 self.reviewObj.all_weight -
@@ -458,11 +477,17 @@ class NewReviewPage extends Vue {
                 value: self.reviewObj.weight_three,
                 name: self.reviewObj.goods_name_three
               });
-              self.chartData.map(item => {
-                if (item.name == "其他") {
-                  item.value = leftWeight;
-                }
-              });
+              if (leftWeight > 0) {
+                self.chartData.map(item => {
+                  if (item.name == "其他") {
+                    item.value = leftWeight;
+                  }
+                });
+              } else {
+                self.chartData = self.chartData.filter(
+                  item => item.name !== "其他"
+                );
+              }
               if (self.reviewObj.weight_four) {
                 leftWeight =
                   self.reviewObj.all_weight -
@@ -474,11 +499,17 @@ class NewReviewPage extends Vue {
                   value: self.reviewObj.weight_four,
                   name: self.reviewObj.goods_name_four
                 });
-                self.chartData.map(item => {
-                  if (item.name == "其他") {
-                    item.value = leftWeight;
-                  }
-                });
+                if (leftWeight > 0) {
+                  self.chartData.map(item => {
+                    if (item.name == "其他") {
+                      item.value = leftWeight;
+                    }
+                  });
+                } else {
+                  self.chartData = self.chartData.filter(
+                    item => item.name !== "其他"
+                  );
+                }
                 if (self.reviewObj.weight_five) {
                   leftWeight =
                     self.reviewObj.all_weight -
@@ -491,11 +522,17 @@ class NewReviewPage extends Vue {
                     value: self.reviewObj.weight_five,
                     name: self.reviewObj.goods_name_five
                   });
-                  self.chartData.map(item => {
-                    if (item.name == "其他") {
-                      item.value = leftWeight;
-                    }
-                  });
+                  if (leftWeight > 0) {
+                    self.chartData.map(item => {
+                      if (item.name == "其他") {
+                        item.value = leftWeight;
+                      }
+                    });
+                  } else {
+                    self.chartData = self.chartData.filter(
+                      item => item.name !== "其他"
+                    );
+                  }
                 }
               }
             }
@@ -514,19 +551,24 @@ class NewReviewPage extends Vue {
         } else {
           self.cartPercent = "超过" + cartPer + "%";
         }
-        self.goodsList = self.reviewObj.search_content;
-        self.goodsList.map(item => {
-          if (self.originGoodsList.indexOf(item) != -1) {
-            self.originGoodsList.splice(self.originGoodsList.indexOf(item), 1);
-          }
-        });
+        self.goodsList = self.reviewObj.search_content || [];
+        if (self.goodsList.length > 0) {
+          self.goodsList.map(item => {
+            if (self.originGoodsList.indexOf(item) != -1) {
+              self.originGoodsList.splice(
+                self.originGoodsList.indexOf(item),
+                1
+              );
+            }
+          });
 
-        const leftLength = 8 - self.goodsList.length;
-        if (leftLength > 0) {
-          const leftArr = self.originGoodsList.slice(0, leftLength);
-          self.goodsList = self.goodsList.concat(leftArr);
+          const leftLength = 8 - self.goodsList.length;
+          if (leftLength > 0) {
+            const leftArr = self.originGoodsList.slice(0, leftLength);
+            self.goodsList = self.goodsList.concat(leftArr);
+          }
         }
-        console.log(self.goodsList);
+        console.log(self.goodsList.length);
         if (self.reviewObj.zz_num >= self.reviewObj.dx_num) {
           self.chName = "舍我其谁";
         } else {
@@ -547,13 +589,15 @@ class NewReviewPage extends Vue {
       console.log("swiperSlideIndex:>>", this.swiperSildeIndex);
     }
     if (this.custNo !== "-1") {
-      // if (this.reviewObj.all_weight > 0) {
-      //   if (this.swiperSildeIndex == 1) {
-      //     this.setChart();
-      //   }
-      // }
-      if (this.swiperSildeIndex == 6) {
-        this.modalShow = true;
+      const arr = this.reviewObj.search_content || [];
+      if (arr.length > 0) {
+        if (this.swiperSildeIndex == 7) {
+          this.modalShow = true;
+        }
+      } else {
+        if (this.swiperSildeIndex == 6) {
+          this.modalShow = true;
+        }
       }
     } else {
       if (this.swiperSildeIndex == 1) {
@@ -650,7 +694,7 @@ class NewReviewPage extends Vue {
           // name: "111",
           top: 15,
           type: "pie",
-          radius: ["35%", "60%"],
+          radius: ["30%", "53%"],
           // avoidLabelOverlap: false,
           label: {
             show: true,
@@ -710,32 +754,47 @@ class NewReviewPage extends Vue {
       }
     }
   }
+  autoScroll() {
+    console.log("auto scroll");
+    window.scroll(0, 0);
+  }
   async submintInfor() {
     console.log(this.picked);
     const compName = self.$refs.compName.value;
     const phoneNum = self.$refs.phoneNum.value;
     if (compName.trim().length === 0) {
-      self.$alert.show({ msg: "公司名称不能为空" })
+      self.$alert.show({ msg: "公司名称不能为空" });
     } else if (phoneNum.trim().length === 0) {
-      self.$alert.show({ msg: "联系电话不能为空" })
+      self.$alert.show({ msg: "联系电话不能为空" });
     } else if (this.picked == "") {
-      self.$alert.show({ msg: "请选择经营性质" })
+      self.$alert.show({ msg: "请选择经营性质" });
+    } else if (!self.phoneReg.test(phoneNum)) {
+      self.$alert.show({ msg: "请输入正确手机号" });
     } else {
-      const param = {
-        custName: compName,
-        phone: phoneNum,
-        type: this.picked
-      };
-      if (this.custNo !== "-1") {
-        param["custNo"] = this.custNo
-      }
-      const data = await self.ironRequest(
-        "promote/feedback.shtml?",
-        param,
-        "post"
-      );
-      if (data.returncode == 0) {
-        self.$alert.show({ msg: "加盟成功！" });
+      if (this.btnClick) {
+        this.btnClick = false;
+        try {
+          const param = {
+            custName: compName,
+            phone: phoneNum,
+            type: this.picked
+          };
+          if (this.custNo !== "-1") {
+            param["custNo"] = this.custNo;
+          }
+          const data = await self.ironRequest(
+            "promote/feedback.shtml?",
+            param,
+            "post"
+          );
+          if (data.returncode == 0) {
+            this.btnClick = true;
+            self.$alert.show({ msg: "加盟成功！" });
+          }
+        } catch (e) {
+          this.btnClick = true;
+          self.$alert.show({ msg: "网络异常" });
+        }
       }
     }
   }
@@ -752,15 +811,15 @@ vm(val)
   font-style normal
   src url('../assets/font/zhangweijing.ttf')
 @keyframes fadeio
-    /*设置内容由显示变为隐藏*/
-    0%
-        opacity 1
-    50%
-        opacity 0
-    100%
-        opacity 1
+  /* 设置内容由显示变为隐藏 */
+  0%
+    opacity 1
+  50%
+    opacity 0
+  100%
+    opacity 1
 .fadenum
-    animation fadeio 2s infinite
+  animation fadeio 2s infinite
 .ff-zwj
   font-family zwj
 .ls-1
@@ -980,7 +1039,7 @@ vm(val)
       display table-cell
       vertical-align middle
   .second-frame
-    width vm(50)
+    width vm(65)
     height vm(50)
     position absolute
     left vm(258)
@@ -1006,10 +1065,10 @@ vm(val)
       display table-cell
       vertical-align middle
   .forth-frame
-    width vm(42)
-    height vm(42)
+    width vm(55)
+    height vm(44)
     position absolute
-    left vm(5)
+    left vm(4)
     top vm(55)
     display table
     .goods-forth
@@ -1283,6 +1342,8 @@ vm(val)
       .qrcode
         width vm(120)
         height vm(120)
+.slide-introduce-bg-ios
+  background-image url('../assets/imgs/introduceiosbk.jpg')
 .slide-introduce1-bg
   background -webkit-image-set(url('http://xymobile.xingyun361.com/introduce1bkg.png') 1x)
   .introduceframe-style
