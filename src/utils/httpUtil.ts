@@ -79,7 +79,7 @@ class HttpUtil {
   ironRequest(
     reqUrl: string,
     param: any,
-    type = "get",
+    type: string,
     context: any
   ): Promise<any> {
     const basicParams: any = Object.assign({}, param);

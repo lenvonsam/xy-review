@@ -4,39 +4,33 @@
   //- span(style="position: absolute; top: 15px; left: 15px; z-index: 20", @click="cancelAuth") 取消授权
   .box.banner-bg.full-width
     img.banner-img(src="../assets/imgs/home_banner.png")
-    div(style="height: 30px")
-    //- img.banner-img.title(src="../assets/imgs/home_title.png")
-    .login-box(:style="{width: loginBoxWidth+ 'px', height: loginBoxHeight + 'px'}")
-      .title 登录
-      .input-bg
-        .row
-          .flex-20.flex.align-center
+    .space
+    img.title.up(src="../assets/imgs/home_title_up.png", :style="{height: loginBoxBarTopHeight + 'px', width: loginBoxBarTopWidth + 'px'}")
+    .relative(style="overflow-y:hidden;")
+      img.title.down(src="../assets/imgs/home_title_down.png", :style="{height: loginBoxBarDownHeight + 'px', width: loginBoxBarDownWidth + 'px'}")
+      .login-box.animated.slideInDown(:style="{width: loginBoxWidth+ 'px', height: loginBoxHeight + 'px', top: '-' + loginBoxTop + 'px'}")
+        .title
+        .input-bg.row.align-center
+          .flex-30.flex.align-center
             img.icon(src="../assets/imgs/user_icon.png")
           .col
             input(placeholder="请输入手机号", type="tel", v-model="phone", @blur="iosAdaptor")
-      .input-bg.pr-5
-        .row
-          .flex-20.flex.align-center
+        .input-bg.sec.pr-5.row.align-center
+          .flex-30.flex.align-center
             img.icon(src="../assets/imgs/pwd_icon.png")
           .col.pr-5
             input(placeholder="请输入验证码", type="tel", v-model="code", @blur="iosAdaptor")
           .flex-68
             .captcha(@click="getCode") {{codeText}}
-      .login-btn(@click="loginAction")
-    .bottom-shape-l
-    .bottom-shape-r
+        .login-btn(@click="loginAction")
+  .bottom-shape
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import alertModal from "@/components/AlertModal.vue";
 
 let me: any;
-@Component({
-  components: {
-    alertModal
-  }
-})
+@Component({})
 class HomePage extends Vue {
   phone = "";
   code = "";
@@ -50,13 +44,23 @@ class HomePage extends Vue {
   exitNo = "";
   deviceRatio = 1;
   wxObj: any = {};
-  loginBoxWidth = 362.5;
-  loginBoxHeight = 401.5;
+  loginBoxBarTopWidth = 337;
+  loginBoxBarTopHeight = 3;
+  loginBoxBarDownWidth = 339;
+  loginBoxBarDownHeight = 10;
+  loginBoxWidth = 315;
+  loginBoxHeight = 362;
+  loginBoxTop = 9;
   beforeMount() {
     me = this;
     this.clearTime();
-    this.loginBoxWidth = (362.5 / 414) * me.screenWidth;
-    this.loginBoxHeight = (401.5 / 362.5) * this.loginBoxWidth;
+    this.loginBoxWidth = (315 / 375) * me.screenWidth;
+    this.loginBoxHeight = (362 / 315) * this.loginBoxWidth;
+    this.loginBoxBarTopWidth = (337 / 375) * me.screenWidth;
+    this.loginBoxBarTopHeight = (3 / 337) * this.loginBoxBarTopWidth;
+    this.loginBoxBarDownWidth = (339 / 375) * me.screenWidth;
+    this.loginBoxBarDownHeight = (10 / 339) * this.loginBoxBarDownWidth;
+    this.loginBoxTop = (9 / 375) * me.screenWidth;
     this.codeText = "获取验证码";
     this.authRequest = localStorage.getItem("authRequest") || "0";
     this.exitNo = localStorage.getItem("cust_no") || "";
@@ -68,7 +72,9 @@ class HomePage extends Vue {
       this.postSourceInfo(queryObject.source);
     }
     if (this.exitNo.length > 0)
-      window.location.replace(me.visitUrl + "#/review?cust_no=" + this.exitNo);
+      window.location.replace(
+        me.visitUrl + "#/newReview?cust_no=" + this.exitNo
+      );
     if (newUserMark === "1") window.location.replace(me.visitUrl + "#/newUser");
     if (!this.userAuth) {
       if (this.authRequest == "0") {
@@ -101,7 +107,9 @@ class HomePage extends Vue {
   async postSourceInfo(type: string) {
     try {
       await me.ironRequest(
-        "promote/updateReviewNum.shtml?type=" + Number(type)
+        "promote/updateReviewNum.shtml?type=" + Number(type),
+        {},
+        "get"
       );
     } catch (e) {
       console.error(e);
@@ -142,7 +150,11 @@ class HomePage extends Vue {
       }
       if (this.canClick) {
         this.canClick = false;
-        await me.ironRequest("getCaptcha.shtml?user_phone=" + this.phone);
+        await me.ironRequest(
+          "getCaptcha.shtml?user_phone=" + this.phone + "&type=7",
+          {},
+          "get"
+        );
         this.clearTime();
         this.codeTime = setInterval(function() {
           me.codeText = `${me.codeCount}s`;
@@ -157,7 +169,20 @@ class HomePage extends Vue {
       }
     } catch (e) {
       this.canClick = true;
-      me.$alert.show({ msg: e.message });
+      if (e.message === "该手机号未注册") {
+        me.$alert.show({
+          msg: e.message,
+          btnText: "我知道啦",
+          extraJump: true,
+          cb(resp) {
+            if (resp === "extra") {
+              window.location.replace(me.visitUrl + "#/newReview?cust_no=-1");
+            }
+          }
+        });
+      } else {
+        me.$alert.show({ msg: e.message });
+      }
     }
   }
   async loginAction() {
@@ -192,7 +217,9 @@ class HomePage extends Vue {
           "promote/validCaptcha.shtml?user_phone=" +
             this.phone +
             "&valid_code=" +
-            this.code.trim()
+            this.code.trim(),
+          {},
+          "get"
         );
         console.log("data:>>", data);
         this.canHttp = true;
@@ -200,7 +227,7 @@ class HomePage extends Vue {
           localStorage.setItem("cust_no", data.cust_no);
           this.bindWxAuthXyUser(data.cust_co);
           window.location.replace(
-            me.visitUrl + "#/review?cust_no=" + data.cust_no
+            me.visitUrl + "#/newReview?cust_no=" + data.cust_no
           );
         } else {
           localStorage.setItem("new_user", "1");
@@ -247,46 +274,43 @@ export default HomePage;
 
 <style lang="stylus" scoped>
 .container
+  .bottom-shape
+    position absolute
+    bottom 0px
+    left 0px
+    right 0px
+    height 55%
+    background-image url('../assets/imgs/review_login_bottom.png')
+    background-size cover
+    background-position center
   .box
     position relative
-    // background -webkit-image-set(
-    // url('../assets/imgs/bg_home.png') 1x,
-    // url('../assets/imgs/bg_home.png') 2x,
-    // url('../assets/imgs/bg_home.png') 3x
-    // )
     background-image url('../assets/imgs/bg_home.png')
-    padding-top 10%
-    .banner-img
-      width 260px
-      height 100px
+    padding-top 5%
+    .banner-img, .title
+      position relative
+      z-index 10
+      width 250px
       margin 0px auto
       display block
-      &.title
-        // width 267.5px
-        height 27.5px
-        margin-top 15px
-        margin-bottom 15px
-    .bottom-shape-l
-      position absolute
-      bottom 0px
-      left 0
-      background-image url('../assets/imgs/review_login_bl.png')
-      background-size cover
-      width 112px
-      height 173px
-      z-index 15
-    .bottom-shape-r
-      position absolute
-      bottom 0px
-      right 0px
-      background-image url('../assets/imgs/review_login_br.png')
-      background-size cover
-      width 140px
-      height 203px
-      z-index 15
+    .banner-img
+      height 184px
+    .title
+      position relative
+      z-index 10
+      &.up
+        width 337px
+        height 3px
+      &.down
+        width 339px
+        height 10px
+    .space
+      height 15px
   .login-box
-    width 362.5px
-    height 401.5px
+    position absolute
+    top -9px
+    width 315px
+    height 362px
     background-image url('../assets/imgs/review_login_box.png')
     background-size cover
     margin 0 auto
@@ -295,25 +319,30 @@ export default HomePage;
     box-sizing border-box
     -webkit-box-sizing border-box
     -moz-box-sizing border-box
-    padding-top 12%
-    padding-left 13.5%
-    padding-right 13.5%
+    animation-delay 0.3s
+    animation-duration 4s
+    padding-top 10%
+    padding-left 10%
+    padding-right 10%
+    // animation animateDrawer 2s ease
     .title
-      color #6000c6
-      font-size 26px
-      font-weight bold
-      text-align center
-      letter-spacing 1px
+      margin 0 auto
+      width 66px
+      height 31px
+      background-image url('../assets/imgs/review_login_box_title.png')
+      background-size cover
     .input-bg
-      background #f8f8f8
+      background #fff
       box-sizing border-box
       padding 10px 15px
       width 100%
       margin 0 auto
       margin-top 18px
-      height 45px
+      height 64px
+      &.sec
+        margin-top 25px
       .icon
-        width 14px
+        width 20px
       input
         width 100%
         background transparent
@@ -322,39 +351,39 @@ export default HomePage;
         // color #9d9d9d
         // font-size 13px
       .captcha
-        height 35px
-        width 65px
+        height 42px
+        width 75.5px
         display flex
         align-items center
-        background #6000c6
-        font-size 10px
+        background #8A8886
+        font-size 12px
         justify-content center
         border-radius 5px
         color #fff
-        margin-top -5px
     .login-btn
-      position absolute
-      width 177px
-      height 55px
+      width 182px
+      height 54px
       margin 0 auto
-      bottom 12%
-      left calc(((100% - 177px) / 2))
-      z-index 20
+      margin-top 30px
       background-image url('../assets/imgs/review_login_btn.png')
       background-size cover
 .flex-68
   flex 0 0 68px
 @media screen and (width: 320px)
   .box
-    padding-top 2% !important
+    padding-top 1% !important
+    .banner-img
+      width 220px !important
+      height 162px !important
+    .space
+      height 5px !important
     .login-box
-      padding-top 8%
-    .banner-img.title
-      margin-top 10px !important
-      margin-bottom 10px !important
+      padding-top 5%
+    .login-btn
+      margin-top 20px !important
 @media screen and (max-height: 605px)
   .box
-    padding-top 8% !important
+    padding-top 6% !important
     // .login-box
     // width 300px !important
     // height 370px !important
@@ -366,17 +395,16 @@ export default HomePage;
     height 145px !important
 @media screen and (max-height: 550px)
   .box
-    padding-top 3% !important
-    .banner-img.title
-      margin-top 10px !important
-      margin-bottom 10px !important
+    padding-top 2% !important
+    .banner-img
+      width 220px !important
+      height 162px !important
+    .space
+      height 5px !important
 @media screen and (min-height: 720px)
   .box
     padding-top 16% !important
 @media screen and (min-height: 780px)
   .box
     padding-top 22% !important
-    .banner-img.title
-      margin-top 25px !important
-      margin-bottom 25px !important
 </style>

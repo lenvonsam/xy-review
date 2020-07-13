@@ -28,7 +28,7 @@ class MixinConfig extends Vue {
   ): Promise<any> {
     return this.httpUtil.commRequest(url, params, method, proxyType, charset);
   }
-  ironRequest(reqUrl: string, param: any, type = "get"): Promise<any> {
+  ironRequest(reqUrl: string, param: any, type: string): Promise<any> {
     return this.httpUtil.ironRequest(reqUrl, param, type, this);
   }
   initWxJs() {
