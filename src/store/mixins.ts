@@ -10,6 +10,7 @@ class MixinConfig extends Vue {
   phoneReg = /^1[3-9]\d{9}$/;
   codeReg = /^\d+$/;
   visitUrl = "http://wechat.xingyun361.com/xyreviewdev/index.html";
+  // visitUrl = "http://localhost:8080/";
   query2Obj(query: any): any {
     const arr = query.split("&");
     const obj: any = {};
@@ -28,7 +29,7 @@ class MixinConfig extends Vue {
   ): Promise<any> {
     return this.httpUtil.commRequest(url, params, method, proxyType, charset);
   }
-  ironRequest(reqUrl: string, param: any, type = "get"): Promise<any> {
+  ironRequest(reqUrl: string, param: any, type: string): Promise<any> {
     return this.httpUtil.ironRequest(reqUrl, param, type, this);
   }
   initWxJs() {

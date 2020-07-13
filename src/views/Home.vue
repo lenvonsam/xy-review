@@ -39,7 +39,7 @@ class HomePage extends Vue {
   codeCount = 30;
   canClick = true;
   canHttp = true;
-  userAuth = false;
+  userAuth = true;
   authRequest = "0";
   exitNo = "";
   deviceRatio = 1;
@@ -72,7 +72,9 @@ class HomePage extends Vue {
       this.postSourceInfo(queryObject.source);
     }
     if (this.exitNo.length > 0)
-      window.location.replace(me.visitUrl + "#/review?cust_no=" + this.exitNo);
+      window.location.replace(
+        me.visitUrl + "#/newReview?cust_no=" + this.exitNo
+      );
     if (newUserMark === "1") window.location.replace(me.visitUrl + "#/newUser");
     if (!this.userAuth) {
       if (this.authRequest == "0") {
@@ -105,7 +107,9 @@ class HomePage extends Vue {
   async postSourceInfo(type: string) {
     try {
       await me.ironRequest(
-        "promote/updateReviewNum.shtml?type=" + Number(type)
+        "promote/updateReviewNum.shtml?type=" + Number(type),
+        {},
+        "get"
       );
     } catch (e) {
       console.error(e);
@@ -146,7 +150,11 @@ class HomePage extends Vue {
       }
       if (this.canClick) {
         this.canClick = false;
-        await me.ironRequest("getCaptcha.shtml?user_phone=" + this.phone);
+        await me.ironRequest(
+          "getCaptcha.shtml?user_phone=" + this.phone + "&type=7",
+          {},
+          "get"
+        );
         this.clearTime();
         this.codeTime = setInterval(function() {
           me.codeText = `${me.codeCount}s`;
@@ -161,7 +169,20 @@ class HomePage extends Vue {
       }
     } catch (e) {
       this.canClick = true;
-      me.$alert.show({ msg: e.message });
+      if (e.message === "该手机号未注册") {
+        me.$alert.show({
+          msg: e.message,
+          btnText: "我知道啦",
+          extraJump: true,
+          cb(resp) {
+            if (resp === "extra") {
+              window.location.replace(me.visitUrl + "#/newReview?cust_no=-1");
+            }
+          }
+        });
+      } else {
+        me.$alert.show({ msg: e.message });
+      }
     }
   }
   async loginAction() {
@@ -196,7 +217,9 @@ class HomePage extends Vue {
           "promote/validCaptcha.shtml?user_phone=" +
             this.phone +
             "&valid_code=" +
-            this.code.trim()
+            this.code.trim(),
+          {},
+          "get"
         );
         console.log("data:>>", data);
         this.canHttp = true;
@@ -204,7 +227,7 @@ class HomePage extends Vue {
           localStorage.setItem("cust_no", data.cust_no);
           this.bindWxAuthXyUser(data.cust_co);
           window.location.replace(
-            me.visitUrl + "#/review?cust_no=" + data.cust_no
+            me.visitUrl + "#/newReview?cust_no=" + data.cust_no
           );
         } else {
           localStorage.setItem("new_user", "1");
@@ -297,7 +320,7 @@ export default HomePage;
     -webkit-box-sizing border-box
     -moz-box-sizing border-box
     animation-delay 0.3s
-    animation-duration 5s
+    animation-duration 4s
     padding-top 10%
     padding-left 10%
     padding-right 10%
