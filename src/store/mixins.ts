@@ -7,6 +7,7 @@ class MixinConfig extends Vue {
   @State screenWidth: any;
   @State screenHeight: any;
   appId = "wxb1a990032d59f1d4";
+  version = "1.0.2";
   phoneReg = /^1[3-9]\d{9}$/;
   codeReg = /^\d+$/;
   visitUrl = "http://wechat.xingyun361.com/xyreview/index.html";

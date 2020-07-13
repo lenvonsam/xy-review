@@ -64,6 +64,14 @@ class HomePage extends Vue {
     this.codeText = "获取验证码";
     this.authRequest = localStorage.getItem("authRequest") || "0";
     this.exitNo = localStorage.getItem("cust_no") || "";
+    const currentVersion = localStorage.getItem("version") || "";
+    if (currentVersion !== me.version) {
+      this.authRequest = "0";
+      this.exitNo = "";
+      localStorage.removeItem("authRequest");
+      localStorage.removeItem("cust_no");
+      localStorage.setItem("version", me.version);
+    }
     this.deviceRatio = window.devicePixelRatio;
     const newUserMark = localStorage.getItem("new_user") || "0";
     const queryObject: any = me.query2Obj(window.location.search.substring(1));
