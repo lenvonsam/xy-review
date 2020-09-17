@@ -36,12 +36,12 @@ var AlertConfig = /** @class */ (function () {
                     on: {
                         resp: function (res) {
                             if (config !== undefined && config.cb !== undefined) {
-                                if (res.type === "confirm") {
-                                    config.cb("confirm");
-                                }
-                                else {
-                                    config.cb("hide");
-                                }
+                                config.cb(res.type);
+                                // if (res.type === "confirm") {
+                                //   config.cb("confirm");
+                                // } else {
+                                //   config.cb(res.type);
+                                // }
                             }
                         }
                     }

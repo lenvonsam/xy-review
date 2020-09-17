@@ -1,9 +1,10 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "../views/Home.vue";
 import NewUser from "../views/NewUser.vue";
 import Review from "../views/Review.vue";
 import NewReview from "../views/NewReview.vue";
+import LoginThird from "../views/LoginThird.vue";
+import ReviewThird from "../views/ReviewThird.vue";
 Vue.use(VueRouter);
 var routes = [
     {
@@ -13,7 +14,7 @@ var routes = [
     {
         path: "/home",
         name: "Home",
-        component: Home
+        component: LoginThird
     },
     {
         path: "/newUser",
@@ -39,6 +40,16 @@ var routes = [
         component: function () {
             return import(/* webpackChunkName: "about" */ "../views/About.vue");
         }
+    },
+    {
+        path: "/loginThird",
+        name: "/LoginThird",
+        component: LoginThird
+    },
+    {
+        path: "/reviewThird",
+        name: "/ReviewThird",
+        component: ReviewThird
     }
 ];
 var router = new VueRouter({

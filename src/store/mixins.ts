@@ -11,6 +11,7 @@ class MixinConfig extends Vue {
   codeReg = /^\d+$/;
   visitUrl = "http://wechat.xingyun361.com/xyreviewdev/index.html";
   // visitUrl = "http://localhost:8080/";
+  // visitUrl = "http://172.16.120.235:8080/";
   query2Obj(query: any): any {
     const arr = query.split("&");
     const obj: any = {};
