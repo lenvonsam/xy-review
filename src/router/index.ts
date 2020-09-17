@@ -4,6 +4,8 @@ import Home from "../views/Home.vue";
 import NewUser from "../views/NewUser.vue";
 import Review from "../views/Review.vue";
 import NewReview from "../views/NewReview.vue";
+import LoginThird from "../views/LoginThird.vue";
+import ReviewThird from "../views/ReviewThird.vue";
 
 Vue.use(VueRouter);
 
@@ -15,7 +17,7 @@ const routes = [
   {
     path: "/home",
     name: "Home",
-    component: Home
+    component: LoginThird
   },
   {
     path: "/newUser",
@@ -40,6 +42,16 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/About.vue")
+  },
+  {
+    path: "/loginThird",
+    name: "/LoginThird",
+    component: LoginThird
+  },
+  {
+    path: "/reviewThird",
+    name: "/ReviewThird",
+    component: ReviewThird
   }
 ];
 
