@@ -62,7 +62,7 @@
               span.ml-5 智能提货
             img.mt-5.qrcode.animated.fadeIn(src="../assets/imgs/qrcode.jpg", style="animation-duration: 1.5s; animation-delay: 1s")
             .mt-5(style="font-size:10px; color: #504E49") 微信扫码体验型云小程序
-    swiper.swipper.full-width(:options="swiperOption", ref="xySwiper", @slideChange="slideTouchChange",v-else)
+    swiper.swipper.full-width(:options="swiperOption", ref="xySwiper", @slideChange="slideTouchChange", v-else)
       swiper-slide
         .banner-bg.border-box.full-width.padding-xl.relative.page1-bkg(:style="{height: screenHeight + 'px'}")
           .content-bg.flex-column.text-center.lh-34.font-15
@@ -105,7 +105,7 @@
           .content-bg.flex-column.text-center.lh-30.font-15
             .flex-row
               span 您一共成交了 
-              .font-25.ml-3 {{reviewObj.xy_contract}}
+              .font-25.ml-3 {{reviewObj.dx_num + reviewObj.zz_num}}
               span 笔 合同
             .flex-row
               span 我们的业务员为您提供了 
@@ -147,52 +147,52 @@
               span 位客户
             span 您的一小步，型云的一大步
       swiper-slide
+        .banner-bg.border-box.full-width.padding-xl.relative.page5-bkg(:style="{height: screenHeight + 'px'}")
+          .pic-8-space(:style="{height: picSpaceHeight + 'px'}")
+            .relative.pic-8.text-center.font-13
+              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+                .flex-row
+                  span 本季度型云成交额超
+                  span {{turnover}}
+              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+                .flex-row
+                  span 为
+                  span {{reviewObj.xy_customer}}
+                  span 位客户完成了
+                  span {{reviewObj.xy_contract}}
+                  span 笔合同
+              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+                .flex-row
+                  span 提供了
+                  span {{reviewObj.xy_search}}
+                  span 次物资的搜索与比价
+              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+                .flex-row
+                  span 不忘初心、至臻服务
+              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+                .flex-row
+                  span 请您告诉型云，理想的诗和远方。
+              .checkbox-bg.flex-column
+                label.flex-row(v-for="item in opinionList" :key="item.id")
+                  input(type="checkbox", :value="item.value", v-model="pickedOpinions")
+                  span {{item.value}}
+              .textarea-bg(:style="{height: textareaBgHeight + 'px'}")
+                span.text-center 其他希望的内容
+                textarea(v-model="writeOpinion", @blur="autoScroll")
+              .confirm-btn(:style="{height: confirmBtnHeight + 'px'}", @click="getOpinions")
+      swiper-slide
         .banner-bg.border-box.full-width.padding-xl.relative.page7-bkg(:style="{height: screenHeight + 'px'}")
           .content-bg.flex-column.text-center.lh-30.font-15
             .flex-row
               .font-25.mr-3 {{reviewObj.days}}
               span 个日日夜夜
             .flex-row
-              .font-25.mr-3 {{reviewObj.days *24}}
+              .font-25.mr-3 {{reviewObj.days * 8}}
               span 个小时的采钢服务
             span 这就是最长情的陪伴
             .font-35.lh-47 {{titleInfo(reviewObj.all_weight)}}
             span 非您莫属
           .page7-pic(:class="titleBkg")
-      swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page5-bkg(:style="{height: screenHeight + 'px'}")
-          .relative.pic-8.text-center.font-12
-            .words-bg(v-if="keyboardShow")
-              .flex-row
-                span 本季度型云成交额超
-                span {{reviewObj.xy_turnover}}
-                span 元
-            .words-bg(v-if="keyboardShow")
-              .flex-row
-                span 为
-                span {{reviewObj.xy_customer}}
-                span 位客户完成了
-                span {{reviewObj.xy_contract}}
-                span 笔合同
-            .words-bg(v-if="keyboardShow")
-              .flex-row
-                span 提供了
-                span {{reviewObj.xy_search}}
-                span 次物资的搜索与比价
-            .words-bg(v-if="keyboardShow")
-              .flex-row
-                span 不忘初心、至臻服务
-            .words-bg
-              .flex-row
-                span 请您告诉型云，理想的诗和远方。
-            .checkbox-bg.flex-column
-              label.flex-row(v-for="item in opinionList" :key="item.id")
-                input(type="checkbox", :value="item.value", v-model="pickedOpinions")
-                span {{item.value}}
-            .textarea-bg
-              span.text-center 其他希望的内容
-              textarea(v-model="writeOpinion", @click="getInput", @blur="autoScroll")
-            .confirm-btn(@click="getOpinions")
       swiper-slide
         .banner-bg.border-box.full-width.padding-xl.relative.page8-bkg(:style="{height: screenHeight + 'px'}")
           .page8-content-bg.relative
@@ -211,7 +211,7 @@ import { Component, Vue } from "vue-property-decorator";
 import music from "@/components/Music.vue";
 import echarts from "echarts";
 import shareModal from "@/components/ShareModal.vue";
-
+// eslint-disable-next-line
 let self: any;
 @Component({
   components: {
@@ -223,6 +223,7 @@ class ReviewPageThird extends Vue {
   showPage = false;
   wxShareTitle = "型云季度回顾";
   wxShareDesc = "型云分享描述";
+  // eslint-disable-next-line
   echarts: any = echarts;
   custNo = "";
   reviewObj = {};
@@ -241,7 +242,6 @@ class ReviewPageThird extends Vue {
       slideShadows: true
     }
   };
-  // allweight = 0;
   titleBkg = "first";
   chartData = [];
   relaseNum = 1;
@@ -254,7 +254,6 @@ class ReviewPageThird extends Vue {
     { id: 2, value: "希望增加仓单质押服务" },
     { id: 3, value: "希望增加特价竞拍服务" }
   ];
-  // pickedOpinionList = [];
   writeOpinion = "";
   pickedOpinions = [];
   phoneInput = "";
@@ -268,9 +267,18 @@ class ReviewPageThird extends Vue {
   ];
   btnClick = true;
   modalShow = false;
-  keyboardShow = true;
+  modalShowNever = true;
+  turnover = 10;
+  picSpaceHeight = 560;
+  wordsBgHeight = 21;
+  textareaBgHeight = 90;
+  confirmBtnHeight = 27;
   beforeMount() {
     self = this;
+    self.picSpaceHeight = (560 / 667) * window.innerHeight;
+    self.wordsBgHeight = (21 / 667) * window.innerHeight;
+    self.textareaBgHeight = (90 / 667) * window.innerHeight;
+    self.confirmBtnHeight = (27 / 667) * window.innerHeight;
     self.initWxConfig();
     if (self.$route.query.cust_no) {
       self.custNo = self.$route.query.cust_no;
@@ -283,9 +291,6 @@ class ReviewPageThird extends Vue {
         self.loadData();
       }
     } else {
-      // 地址
-      // window.location.href =
-      //   "http://wechat.xingyun361.com/xyreviewdev/home.html";
       window.location.replace(self.visitUrl);
     }
   }
@@ -299,7 +304,6 @@ class ReviewPageThird extends Vue {
           wx.onMenuShareTimeline({
             title: self.wxShareTitle,
             link: self.visitUrl + "?source=3",
-            // link: "http://172.16.120.235:8080/index.html#/home",
             imgUrl: "http://xymobile.xingyun361.com/share_review_icon.jpg",
             success() {
               console.log("wx share success");
@@ -336,9 +340,6 @@ class ReviewPageThird extends Vue {
   clearData() {
     self = this;
     localStorage.removeItem("cust_no");
-    // 地址
-    // window.location.href =
-    //   "http://wechat.xingyun361.com/xyreviewdev/home.html";
     window.location.replace(self.visitUrl);
   }
   // 轮播翻页
@@ -351,7 +352,9 @@ class ReviewPageThird extends Vue {
     }
     if (this.custNo !== "-1") {
       if (this.swiperSildeIndex == 6) {
-        this.modalShow = true;
+        this.modalShow = true && this.modalShowNever;
+        console.log("末页遮罩层" + this.modalShow);
+        this.modalShowNever = false;
       }
     }
   }
@@ -368,55 +371,40 @@ class ReviewPageThird extends Vue {
     if (data.returncode == "0") {
       console.log(data);
       self.reviewObj = data;
-      self.reviewObj.allWeight = self.reviewObj.all_weight.toFixed(2);
       self.showPage = true;
-      // eslint-disable-next-line prettier/prettier
-      self.reviewObj.allWeightPercent = self.reviewObj.all_weight_percent.toFixed(
-        1
-      );
-      self.reviewObj.allWeightDiff = self.reviewObj.all_weight_diff.toFixed(1);
-      let leftWeight = 0;
-      if (self.reviewObj.weight_one) {
-        leftWeight = self.reviewObj.all_weight - self.reviewObj.weight_one;
-        self.chartData.push({
-          value: self.reviewObj.weight_one,
-          name: self.reviewObj.goods_name_one
-        });
-        if (leftWeight > 0) {
+      if (self.custNo != -1) {
+        self.reviewObj.allWeight = self.reviewObj.all_weight.toFixed(2);
+        // eslint-disable-next-line prettier/prettier
+        self.reviewObj.allWeightPercent = self.reviewObj.all_weight_percent.toFixed(
+          1
+        );
+        self.reviewObj.allWeightDiff = self.reviewObj.all_weight_diff.toFixed(
+          2
+        );
+        self.turnover = self.unitConvert(self.reviewObj.xy_turnover);
+        console.log(self.turnover);
+
+        let leftWeight = 0;
+        if (self.reviewObj.weight_one) {
+          leftWeight = self.reviewObj.all_weight - self.reviewObj.weight_one;
           self.chartData.push({
-            value: leftWeight,
-            name: "其他"
-          });
-        }
-        if (self.reviewObj.weight_two) {
-          leftWeight =
-            self.reviewObj.all_weight -
-            self.reviewObj.weight_one -
-            self.reviewObj.weight_two;
-          self.chartData.push({
-            value: self.reviewObj.weight_two,
-            name: self.reviewObj.goods_name_two
+            value: self.reviewObj.weight_one,
+            name: self.reviewObj.goods_name_one
           });
           if (leftWeight > 0) {
-            self.chartData.map(item => {
-              if (item.name == "其他") {
-                item.value = leftWeight;
-              }
+            self.chartData.push({
+              value: leftWeight,
+              name: "其他"
             });
-          } else {
-            self.chartData = self.chartData.filter(
-              item => item.name !== "其他"
-            );
           }
-          if (self.reviewObj.weight_three) {
+          if (self.reviewObj.weight_two) {
             leftWeight =
               self.reviewObj.all_weight -
               self.reviewObj.weight_one -
-              self.reviewObj.weight_two -
-              self.reviewObj.weight_three;
+              self.reviewObj.weight_two;
             self.chartData.push({
-              value: self.reviewObj.weight_three,
-              name: self.reviewObj.goods_name_three
+              value: self.reviewObj.weight_two,
+              name: self.reviewObj.goods_name_two
             });
             if (leftWeight > 0) {
               self.chartData.map(item => {
@@ -429,16 +417,15 @@ class ReviewPageThird extends Vue {
                 item => item.name !== "其他"
               );
             }
-            if (self.reviewObj.weight_four) {
+            if (self.reviewObj.weight_three) {
               leftWeight =
                 self.reviewObj.all_weight -
                 self.reviewObj.weight_one -
                 self.reviewObj.weight_two -
-                self.reviewObj.weight_three -
-                self.reviewObj.weight_four;
+                self.reviewObj.weight_three;
               self.chartData.push({
-                value: self.reviewObj.weight_four,
-                name: self.reviewObj.goods_name_four
+                value: self.reviewObj.weight_three,
+                name: self.reviewObj.goods_name_three
               });
               if (leftWeight > 0) {
                 self.chartData.map(item => {
@@ -451,17 +438,16 @@ class ReviewPageThird extends Vue {
                   item => item.name !== "其他"
                 );
               }
-              if (self.reviewObj.weight_five) {
+              if (self.reviewObj.weight_four) {
                 leftWeight =
                   self.reviewObj.all_weight -
                   self.reviewObj.weight_one -
                   self.reviewObj.weight_two -
                   self.reviewObj.weight_three -
-                  self.reviewObj.weight_four -
-                  self.reviewObj.weight_five;
+                  self.reviewObj.weight_four;
                 self.chartData.push({
-                  value: self.reviewObj.weight_five,
-                  name: self.reviewObj.goods_name_five
+                  value: self.reviewObj.weight_four,
+                  name: self.reviewObj.goods_name_four
                 });
                 if (leftWeight > 0) {
                   self.chartData.map(item => {
@@ -474,17 +460,41 @@ class ReviewPageThird extends Vue {
                     item => item.name !== "其他"
                   );
                 }
+                if (self.reviewObj.weight_five) {
+                  leftWeight =
+                    self.reviewObj.all_weight -
+                    self.reviewObj.weight_one -
+                    self.reviewObj.weight_two -
+                    self.reviewObj.weight_three -
+                    self.reviewObj.weight_four -
+                    self.reviewObj.weight_five;
+                  self.chartData.push({
+                    value: self.reviewObj.weight_five,
+                    name: self.reviewObj.goods_name_five
+                  });
+                  if (leftWeight > 0) {
+                    self.chartData.map(item => {
+                      if (item.name == "其他") {
+                        item.value = leftWeight;
+                      }
+                    });
+                  } else {
+                    self.chartData = self.chartData.filter(
+                      item => item.name !== "其他"
+                    );
+                  }
+                }
               }
             }
           }
         }
+        setTimeout(function() {
+          self.setChart();
+        }, 300);
+        self.registerYear = self.reviewObj.register_time.substr(0, 4);
+        self.registerMonth = self.reviewObj.register_time.substr(5, 2);
+        self.registerDay = self.reviewObj.register_time.substr(8, 2);
       }
-      setTimeout(function() {
-        self.setChart();
-      }, 300);
-      self.registerYear = self.reviewObj.register_time.substr(0, 4);
-      self.registerMonth = self.reviewObj.register_time.substr(5, 2);
-      self.registerDay = self.reviewObj.register_time.substr(8, 2);
     } else {
       self.$alert.show({
         msg: "加载失败，请重试！",
@@ -572,13 +582,8 @@ class ReviewPageThird extends Vue {
   autoScroll() {
     console.log("auto scroll");
     window.scroll(0, 0);
-    self.keyboardShow = true;
   }
-  getInput() {
-    if (self.mobileVersion() === "and") {
-      self.keyboardShow = false;
-    }
-  }
+
   //点击提示分享至朋友圈
   clickToShare() {
     self.$alert.show({ msg: "点击右上角分享至朋友圈" });
@@ -696,8 +701,8 @@ vh(val)
   flex-direction row
   align-items baseline
   justify-content center
-.font-12
-  font-size vm(12)
+.font-13
+  font-size vm(13)
 .font-15
   font-size vm(15)
 .font-25
@@ -764,56 +769,62 @@ vh(val)
     url('http://xymobile.xingyun361.com/bg_5_1x.png') 1x,
     url('http://xymobile.xingyun361.com/bg_5.png') 2x
   )
-  .pic-8
-    background-image url('http://xymobile.xingyun361.com/pic_8.png')
-    background-size 100% 100%
-    background-repeat no-repeat
-    width vm(285)
-    height vh(560)
+  .pic-8-space
+    width vm(330)
+    // height vh(560)
     margin vh(24) auto
     z-index 9
-    padding vh(22) 0
-    overflow hidden
-    .words-bg
-      width vm(200)
-      height vh(21)
-      line-height vh(21)
-      background #E3DAC9
-      margin vh(4) auto 0
-    .checkbox-bg
-      width vm(190)
-      padding vh(16) 0
-      margin 0 auto
-      align-items flex-start
-      label
-        align-items center
-        padding vh(4) 0
-        span
-          margin-left vm(8)
-    .textarea-bg
-      width vm(190)
-      height vh(90)
-      background-color #E3DBCA
-      margin 0 auto
-      padding-top vh(10)
-      z-index 9
-      textarea
-        -webkit-user-select auto
-        contenteditable true
-        width 80%
-        height 60%
-        background none
-        outline none
-        border none
-        margin-top vh(4)
-        z-index 999
-    .confirm-btn
-      background-image url('http://xymobile.xingyun361.com/confirm_btn.png')
+    .pic-8
+      background-image url('http://xymobile.xingyun361.com/pic_8.png')
       background-size 100% 100%
       background-repeat no-repeat
-      width vm(89)
-      height vh(27)
-      margin vh(13) auto 0
+      width 100%
+      height 100%
+      padding vh(22) 0
+      overflow hidden
+      .words-bg
+        width vm(240)
+        // height vh(21)
+        // line-height vh(21)
+        display flex
+        justify-content center
+        align-item center
+        background #E3DAC9
+        margin vh(4) auto 0
+      .checkbox-bg
+        width vm(205)
+        padding vh(16) 0
+        margin 0 auto
+        align-items flex-start
+        label
+          align-items center
+          padding vh(4) 0
+          span
+            margin-left vm(8)
+      .textarea-bg
+        width vm(210)
+        // height vh(90)
+        background-color #E3DBCA
+        margin 0 auto
+        padding-top vh(10)
+        z-index 9
+        textarea
+          -webkit-user-select auto
+          contenteditable true
+          width 80%
+          height 60%
+          background none
+          outline none
+          border none
+          margin-top vh(4)
+          z-index 999
+      .confirm-btn
+        background-image url('http://xymobile.xingyun361.com/confirm_btn.png')
+        background-size 100% 100%
+        background-repeat no-repeat
+        width vm(89)
+        // height vh(27)
+        margin vh(13) auto 0
 .page6-bkg
   background -webkit-image-set(url('http://xymobile.xingyun361.com/bg_6.png') 1x)
   .title-pic

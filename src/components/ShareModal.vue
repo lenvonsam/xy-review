@@ -66,7 +66,7 @@ export default ShareModal;
   bottom 20%
   left calc(((100% - 132.5px) / 2))
   background-image url('../assets/imgs/share_btn.png')
-@media screen and (width: 320px)
+@media screen and (width 320px)
   .mask-ellipse
     width 180px
     height 58.6px

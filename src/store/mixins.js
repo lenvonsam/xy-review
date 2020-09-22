@@ -118,6 +118,34 @@ const MixinConfig = /** @class */ (function(_super) {
   MixinConfig.prototype.requireImage = function(url) {
     return require("@/assets/imgs/" + url);
   };
+  MixinConfig.prototype.unitConvert = function(num) {
+    const moneyUnits = ["元", "万元", "亿元", "万亿"];
+    const dividend = 10000;
+    let curentNum = num;
+    //转换数字
+    let curentUnit = moneyUnits[0];
+    //转换单位
+    for (let i = 0; i < 4; i++) {
+      curentUnit = moneyUnits[i];
+      if (this.strNumSize(curentNum) < 5) {
+        break;
+      }
+      curentNum = curentNum / dividend;
+    }
+    const m = { num: 0, unit: "" };
+    m.num = Number(curentNum.toFixed(3));
+    m.unit = curentUnit;
+    return m.num + m.unit;
+  };
+  MixinConfig.prototype.strNumSize = function(tempNum) {
+    const stringNum = tempNum.toString();
+    const index = stringNum.indexOf(".");
+    let newNum = stringNum;
+    if (index != -1) {
+      newNum = stringNum.substring(0, index);
+    }
+    return newNum.length;
+  };
   __decorate([State], MixinConfig.prototype, "screenWidth", void 0);
   __decorate([State], MixinConfig.prototype, "screenHeight", void 0);
   MixinConfig = __decorate([Component], MixinConfig);

@@ -9,9 +9,9 @@ class MixinConfig extends Vue {
   appId = "wxb1a990032d59f1d4";
   phoneReg = /^1[3-9]\d{9}$/;
   codeReg = /^\d+$/;
-  visitUrl = "http://wechat.xingyun361.com/xyreviewdev/index.html";
+  // visitUrl = "http://wechat.xingyun361.com/xyreviewdev/index.html";
   // visitUrl = "http://localhost:8080/";
-  // visitUrl = "http://172.16.120.235:8080/";
+  visitUrl = "http://172.16.120.235:8080/";
   query2Obj(query: any): any {
     const arr = query.split("&");
     const obj: any = {};
@@ -72,7 +72,7 @@ class MixinConfig extends Vue {
     if (ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
       //$alert('ios端');
       const speed = 1;
-      const timer = setInterval(function() {
+      const timer = setInterval(function () {
         let currentPosition =
           document.documentElement.scrollTop || document.body.scrollTop;
         currentPosition -= speed;
@@ -105,6 +105,34 @@ class MixinConfig extends Vue {
   }
   requireImage(url: string) {
     return require("@/assets/imgs/" + url);
+  }
+  unitConvert(num: number) {
+    let moneyUnits = ["元", "万元", "亿元", "万亿"]
+    let dividend = 10000;
+    let curentNum = num;
+    //转换数字 
+    let curentUnit = moneyUnits[0];
+    //转换单位 
+    for (let i = 0; i < 4; i++) {
+      curentUnit = moneyUnits[i]
+      if (this.strNumSize(curentNum) < 5) {
+        break;
+      }
+      curentNum = curentNum / dividend
+    }
+    let m = { num: 0, unit: "" }
+    m.num = Number(curentNum.toFixed(3));
+    m.unit = curentUnit;
+    return m.num + m.unit;
+  }
+  strNumSize(tempNum: number) {
+    let stringNum = tempNum.toString();
+    let index = stringNum.indexOf(".");
+    let newNum = stringNum;
+    if (index != -1) {
+      newNum = stringNum.substring(0, index);
+    }
+    return newNum.length;
   }
 }
 export default MixinConfig;
