@@ -343,7 +343,7 @@ class ReviewPageThird extends Vue {
   }
   // 轮播翻页
   slideTouchChange() {
-    const slideIndex = this.$refs.xySwiper.$swiper.activeIndex;
+    const slideIndex = self.$refs.xySwiper.$swiper.activeIndex;
     console.log("slide Index:>>", slideIndex);
     if (this.swiperSildeIndex !== slideIndex) {
       this.swiperSildeIndex = slideIndex;
