@@ -1,16 +1,16 @@
 <template lang="pug">
-.container
-  .banner-bg.border-box.full-width.login-bkg.relative(:style="{height: screenHeight + 'px'}")
-    .login-title
-    .input-bkg.flex-column
+.container.relative
+  .banner-bg.border-box.full-width.login-bkg.relative(:style="{height: screenHeight + 'px', width: (screenWidth+1) + 'px'}")
+    .login-title(:style="{height: loginTitleHeight + 'px'}")
+    .input-bkg.flex-column(:style="{height: loginBkgHeight + 'px'}")
       .dl-word.font-31.text-center 登录
-      .login-input.flex-row.relative
-        .input-icon.head-url
+      .login-input.flex-row.relative(:style="{height: loginInputHeight + 'px'}")
+        .input-icon.head-url(:style="{height: inputIconHeight + 'px'}")
         input(placeholder="请输入手机号", v-model="phoneNum")
-      .login-input.flex-row.relative
-        .input-icon.pwd-url
+      .login-input.flex-row.relative(:style="{height: loginInputHeight + 'px'}")
+        .input-icon.pwd-url(:style="{height: inputIconHeight + 'px'}")
         input(placeholder="请输入验证码", v-model="idCode")
-        .code-btn(@click="getIdCode")  {{codeText}}
+        .code-btn(:style="{height: codeBtnHeight + 'px'}", @click="getIdCode")  {{codeText}}
       .confirm-btn(@click="loginIn") 登录查看
 </template>
 <script lang="ts">
@@ -31,13 +31,24 @@ class LoginThird extends Vue {
   canClick = true;
   authRequest = "0";
   exitNo = "";
+  vhHeight = 676;
+  loginTitleHeight = 162;
+  loginBkgHeight = 329;
+  loginInputHeight = 42;
+  inputIconHeight = 17;
+  codeBtnHeight = 33;
   beforeMount() {
+    this.vhHeight = window.innerHeight;
     self = this;
+    this.loginTitleHeight = (162 / 667) * window.innerHeight;
+    this.loginBkgHeight = (329 / 667) * window.innerHeight;
+    this.loginInputHeight = (42 / 667) * window.innerHeight;
+    this.inputIconHeight = (17 / 667) * window.innerHeight;
+    this.codeBtnHeight = (33 / 667) * window.innerHeight;
     this.clearTime();
     this.codeText = "获取验证码";
     this.authRequest = localStorage.getItem("authRequest") || "0";
     this.exitNo = localStorage.getItem("cust_no") || "";
-    const newUserMark = localStorage.getItem("new_user") || "0";
     const queryObject: any = self.query2Obj(
       window.location.search.substring(1)
     );
@@ -47,10 +58,8 @@ class LoginThird extends Vue {
     }
     if (this.exitNo.length > 0)
       window.location.replace(
-        self.visitUrl + "#/newReview?cust_no=" + this.exitNo
+        self.visitUrl + "#/reviewThird?cust_no=" + this.exitNo
       );
-    if (newUserMark === "1")
-      window.location.replace(self.visitUrl + "#/newUser");
     if (!this.userAuth) {
       if (this.authRequest == "0") {
         this.authRequest = "1";
@@ -65,8 +74,6 @@ class LoginThird extends Vue {
         this.getWxUserInfo(queryObject.code);
       }
     }
-    // if (window.location.href !== me.visitUrl + "#/home")
-    //   window.location.replace(me.visitUrl);
   }
   clearTime() {
     if (this.codeTime) {
@@ -258,21 +265,25 @@ vh(val)
   display flex
   flex-direction row
   align-items center
+.box
+  position relative
+  padding 5%
 .login-bkg
   background -webkit-image-set(url('http://xymobile.xingyun361.com/login_bkg.png') 1x)
+  margin-left -1px
   .login-title
     background-image url('http://xymobile.xingyun361.com/login_title.png')
     background-size contain
     background-repeat no-repeat
     width vm(239)
-    height vh(162)
+    // height vh(162)
     margin vh(70) auto 0
   .input-bkg
     background-image url('http://xymobile.xingyun361.com/input_bg.png')
     background-size 100% 100%
     background-repeat no-repeat
     width vm(321)
-    height vh(329)
+    // height vh(329)
     margin vh(42) auto 0
     .dl-word
       font-size vm(32)
@@ -283,12 +294,11 @@ vh(val)
       background-size 100% 100%
       background-repeat no-repeat
       width vm(227)
-      height vh(42)
+      // height vh(42)
       margin vh(23) 0 0 vm(40)
       .input-icon
-        // background-repeat no-repeat
         width vm(15)
-        height vh(17)
+        // height vh(17)
         margin-left vm(11)
       .head-url
         background-image url('http://xymobile.xingyun361.com/icon_head.png')
@@ -306,9 +316,11 @@ vh(val)
       .width-100
         width vm(100)
       .code-btn
+        display flex
+        justify-content center
+        align-items center
         width vm(75)
-        height vh(33)
-        line-height vh(33)
+        // height vh(33)
         font-size vm(12)
         text-align center
         position absolute
