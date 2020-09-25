@@ -11,7 +11,7 @@ class MixinConfig extends Vue {
   codeReg = /^\d+$/;
   visitUrl = "http://wechat.xingyun361.com/xyreviewdev/index.html";
   // visitUrl = "http://localhost:8080/";
-  // visitUrl = "http://172.16.120.235:8080/";
+  // visitUrl = "http://172.16.120.235:8081/";
   query2Obj(query: any): any {
     const arr = query.split("&");
     const obj: any = {};
@@ -107,8 +107,8 @@ class MixinConfig extends Vue {
     return require("@/assets/imgs/" + url);
   }
   unitConvert(num: number) {
-    let moneyUnits = ["元", "万元", "亿元", "万亿"]
-    let dividend = 10000;
+    const moneyUnits = ["元", "万元", "亿元", "万亿"]
+    const dividend = 10000;
     let curentNum = num;
     //转换数字 
     let curentUnit = moneyUnits[0];
@@ -120,14 +120,14 @@ class MixinConfig extends Vue {
       }
       curentNum = curentNum / dividend
     }
-    let m = { num: 0, unit: "" }
+    const m = { num: 0, unit: "" }
     m.num = Number(curentNum.toFixed(3));
     m.unit = curentUnit;
     return m.num + m.unit;
   }
   strNumSize(tempNum: number) {
-    let stringNum = tempNum.toString();
-    let index = stringNum.indexOf(".");
+    const stringNum = tempNum.toString();
+    const index = stringNum.indexOf(".");
     let newNum = stringNum;
     if (index != -1) {
       newNum = stringNum.substring(0, index);
