@@ -18,7 +18,7 @@
         .part-content 人无我有 人有我优 人优我特 人特我精
       .part-absolute.forth
         .part-title 加工服务
-        .part-content 展现一场钢铁加工的  艺术之旅
+        .part-content 展现一场钢铁加工的艺术之旅
       .part-absolute.fifth
         .part-title 物资采购
         .part-content 我们的服务只为您每一次
@@ -55,13 +55,15 @@
           .empty-list(v-else)
             img.title(src="../assets/imgs/empty_title.png")
             img.line(src="../assets/imgs/empty_line.png")
-          .bottom.text-center
-            .title
+          .bottom.text-center(v-if="reviewObj.rec_goods.length <= 0")
+            .title.mt-10
               span 极速询价
               span.ml-5 一键下单
               span.ml-5 智能提货
+            img.mt-10.qrcode.animated.fadeIn(src="../assets/imgs/qrcode.jpg", style="animation-duration: 1.5s; animation-delay: 1s")
+            .mt-10(style="font-size:10px; color: #504E49") 微信扫码体验型云小程序
+          .bottom(v-else, style="display: flex;flex-direction: column;align-items: center;")
             img.mt-5.qrcode.animated.fadeIn(src="../assets/imgs/qrcode.jpg", style="animation-duration: 1.5s; animation-delay: 1s")
-            .mt-5(style="font-size:10px; color: #504E49") 微信扫码体验型云小程序
     swiper.swipper.full-width(:options="swiperOption", ref="xySwiper", @slideChange="slideTouchChange", v-else)
       swiper-slide
         .banner-bg.border-box.full-width.padding-xl.relative.page1-bkg(:style="{height: screenHeight + 'px'}")
@@ -153,18 +155,18 @@
               .words-bg(:style="{height: wordsBgHeight + 'px'}")
                 .flex-row
                   span 本季度型云成交额超
-                  span {{turnover}}
+                  .text-bold {{turnover}}
               .words-bg(:style="{height: wordsBgHeight + 'px'}")
                 .flex-row
                   span 为
-                  span {{reviewObj.xy_customer}}
+                  .text-bold {{reviewObj.xy_customer}}
                   span 位客户完成了
-                  span {{reviewObj.xy_contract}}
+                  .text-bold {{reviewObj.xy_contract}}
                   span 笔合同
               .words-bg(:style="{height: wordsBgHeight + 'px'}")
                 .flex-row
                   span 提供了
-                  span {{reviewObj.xy_search}}
+                  .text-bold {{reviewObj.xy_search}}
                   span 次物资的搜索与比价
               .words-bg(:style="{height: wordsBgHeight + 'px'}")
                 .flex-row
@@ -378,9 +380,9 @@ class ReviewPageThird extends Vue {
         self.reviewObj.allWeightPercent = self.reviewObj.all_weight_percent.toFixed(
           1
         );
-        self.reviewObj.allWeightDiff = self.reviewObj.all_weight_diff.toFixed(
-          2
-        );
+        self.reviewObj.allWeightDiff = (
+          self.reviewObj.all_weight_diff * 100
+        ).toFixed(2);
         self.turnover = self.unitConvert(self.reviewObj.xy_turnover);
         console.log(self.turnover);
 
@@ -679,7 +681,14 @@ class ReviewPageThird extends Vue {
           labelLine: {
             show: true
           },
-          color: ["#C5EAFF", "#86E8E7", "#C3F8CD", "#9EE4AF"],
+          color: [
+            "#C5EAFF",
+            "#86E8E7",
+            "#C3F8CD",
+            "#9EE4AF",
+            "#70DB93",
+            "#32CD99"
+          ],
           data: this.chartData
         }
       ]
@@ -721,6 +730,8 @@ vh(val)
   margin-right vm(3)
 .text-brown
   color #48362A
+.text-bold
+  font-weight bold
 .content-bg
   width vm(319)
   height auto
@@ -1032,8 +1043,8 @@ vh(val)
         height vh(72)
     .content-box
       background-image url('../assets/imgs/empty_box.png')
-      width vm(318)
-      height vh(452)
+      width vm(290)
+      height vh(450)
       background-size 100% 100%
       background-repeat no-repeat
       margin 0 auto
@@ -1055,7 +1066,7 @@ vh(val)
           padding vh(5) vm(10)
           background #EDF4FF
           border-radius vm(5)
-          margin-bottom vh(5)
+          margin-bottom vh(3)
           font-weight bold
       .empty-list
         padding-top vh(20)
@@ -1073,15 +1084,15 @@ vh(val)
           margin vh(10) 0 0
       .bottom
         box-sizing border-box
-        padding-top 13%
+        padding-top vh(10)
         .title
           letter-spacing vm(1)
           text-align center
           color #42403C
           font-weight bold
-          font-size vm(16)
+          font-size vm(15)
         .qrcode
-          margin-top vh(40)
-          width vm(120)
-          height vm(120)
+          margin-top vh(20)
+          width vh(100)
+          height vh(100)
 </style>
