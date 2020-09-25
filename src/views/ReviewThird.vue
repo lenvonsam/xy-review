@@ -1,18 +1,24 @@
 <template lang="pug">
 .container(v-if="showPage")
-  span(style="position: absolute; top: 15px; left: 15px; z-index: 20", @click="clearData") 退出
+  span(
+    style="position: absolute; top: 15px; left: 15px; z-index: 20",
+    @click="clearData"
+  ) 退出
   music
   share-modal(v-model="modalShow")
-  .banner-bg.border-box.full-width.relative.page6-bkg(v-if="custNo == -1", :style="{height: screenHeight + 'px'}")
+  .banner-bg.border-box.full-width.relative.page6-bkg(
+    v-if="custNo == -1",
+    :style="{ height: screenHeight + 'px' }"
+  )
     .title-pic
     .part-bkg.relative
       .part-title.text-center 我们诚邀
       .part-absolute.first
         .part-title 金融服务
-        .part-content 服务中小微   成就大未来
+        .part-content 服务中小微 成就大未来
       .part-absolute.second
         .part-title 物流服务
-        .part-content 整车拼车顺风车  车车都满
+        .part-content 整车拼车顺风车 车车都满
       .part-absolute.third
         .part-title 钢铁供应
         .part-content 人无我有 人有我优 人优我特 人特我精
@@ -29,15 +35,29 @@
         .formword-style.text-bold 公司名称
         input.pl-10(placeHolder="请输入公司名称", ref="compName", @blur="autoScroll")
         .formword-style.text-bold 联系电话
-        input.pl-10(placeHolder="请输入联系电话", type="tel", ref="phoneNum", v-model="phoneInput")
+        input.pl-10(
+          placeHolder="请输入联系电话",
+          type="tel",
+          ref="phoneNum",
+          v-model="phoneInput"
+        )
         .formword-style.text-bold 经营性质
-        div(style="display: flex;flex-direction: row;justify-content: space-between;")
-          label(v-for="radio,index in radioGroup", :key="index",style="display: flex;flex-direction: row;position:relative;")
+        div(
+          style="display: flex;flex-direction: row;justify-content: space-between;"
+        )
+          label(
+            v-for="(radio, index in radioGroup)",
+            :key="index",
+            style="display: flex;flex-direction: row;position:relative;"
+          )
             input(type="radio", v-model="picked", :value="radio.id")
-            span {{radio.name}}
+            span {{ radio.name }}
         button.comfirm-btn(@click="submintInfor()") 确认
   template(v-else)
-    .banner-bg.border-box.full-width.empty-bg.relative(:style="{height: screenHeight + 'px'}", v-if="reviewObj.all_weight == 0")
+    .banner-bg.border-box.full-width.empty-bg.relative(
+      :style="{ height: screenHeight + 'px' }",
+      v-if="reviewObj.all_weight == 0"
+    )
       .empty-box
         .title-bar
           img(src="../assets/imgs/empty_title_bar.png")
@@ -47,11 +67,15 @@
           img.empty-monkey-right(src="../assets/imgs/monkey_right.png")
         .content-box.banner-bg
           .top-bar.row.justify-center.align-center
-            span.red-text(v-if="reviewObj.rec_goods.length > 0") 这是您关注的物资信息       
+            span.red-text(v-if="reviewObj.rec_goods.length > 0") 这是您关注的物资信息
           .list(v-if="reviewObj.rec_goods && reviewObj.rec_goods.length > 0")
-            .item(v-for="(itm, idx) in reviewObj.rec_goods", v-if="reviewObj.rec_goods.length > 0", :key="idx")
-              span {{itm.name}}
-              span.ml-10 {{itm.standard}}
+            .item(
+              v-for="(itm, idx) in reviewObj.rec_goods",
+              v-if="reviewObj.rec_goods.length > 0",
+              :key="idx"
+            )
+              span {{ itm.name }}
+              span.ml-10 {{ itm.standard }}
           .empty-list(v-else)
             img.title(src="../assets/imgs/empty_title.png")
             img.line(src="../assets/imgs/empty_line.png")
@@ -60,13 +84,29 @@
               span 极速询价
               span.ml-5 一键下单
               span.ml-5 智能提货
-            img.mt-10.qrcode.animated.fadeIn(src="../assets/imgs/qrcode.jpg", style="animation-duration: 1.5s; animation-delay: 1s")
+            img.mt-10.qrcode.animated.fadeIn(
+              src="../assets/imgs/qrcode.jpg",
+              style="animation-duration: 1.5s; animation-delay: 1s"
+            )
             .mt-10(style="font-size:10px; color: #504E49") 微信扫码体验型云小程序
-          .bottom(v-else, style="display: flex;flex-direction: column;align-items: center;")
-            img.mt-5.qrcode.animated.fadeIn(src="../assets/imgs/qrcode.jpg", style="animation-duration: 1.5s; animation-delay: 1s")
-    swiper.swipper.full-width(:options="swiperOption", ref="xySwiper", @slideChange="slideTouchChange", v-else)
+          .bottom(
+            v-else,
+            style="display: flex;flex-direction: column;align-items: center;"
+          )
+            img.mt-5.qrcode.animated.fadeIn(
+              src="../assets/imgs/qrcode.jpg",
+              style="animation-duration: 1.5s; animation-delay: 1s"
+            )
+    swiper.swipper.full-width(
+      :options="swiperOption",
+      ref="xySwiper",
+      @slideChange="slideTouchChange",
+      v-else
+    )
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page1-bkg(:style="{height: screenHeight + 'px'}")
+        .banner-bg.border-box.full-width.padding-xl.relative.page1-bkg(
+          :style="{ height: screenHeight + 'px' }"
+        )
           .content-bg.flex-column.text-center.lh-34.font-15
             span 过去卖出的钢已经变成了千万基建的一部分，
             span 未来要买的钢还在型云的商城里等待被发现。
@@ -78,134 +118,156 @@
             span 见证这一季度的美好与伟大。
           .pic-1
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page2-bkg(:style="{height: screenHeight + 'px'}")
+        .banner-bg.border-box.full-width.padding-xl.relative.page2-bkg(
+          :style="{ height: screenHeight + 'px' }"
+        )
           .content-bg.flex-column.text-center.lh-30.font-15
             span 在2020年第三季度中
             .flex-row
               span 您在型云一共采购了
-              .font-25.ml-3 {{reviewObj.allWeight}}
+              .font-25.ml-3 {{ reviewObj.allWeight }}
               span 吨 钢材
             .flex-row
               span 打败了
-              .font-25.ml-3.mr-3 {{reviewObj.allWeightPercent}}%
+              .font-25.ml-3.mr-3 {{ reviewObj.allWeightPercent }}%
               span 的客户
             .flex-row
               span 相较于上季度提升
-              .font-25.ml-3 {{reviewObj.allWeightDiff}}%
+              .font-25.ml-3 {{ reviewObj.allWeightDiff }}%
             .flex-row
               span 其中
-              .font-25.ml-3.mr-3 {{reviewObj.goods_name_one}}
+              .font-25.ml-3.mr-3 {{ reviewObj.goods_name_one }}
               span 为主要采购品种
-            .font-35.lh-47 {{titleInfo(reviewObj.all_weight)}}
+            .font-35.lh-47 {{ titleInfo(reviewObj.all_weight) }}
             span 是您最合适的称号
             span 不忘采购的初心
             span 更不负挣钱的韶华
           .mt-10
-            .charts-style(class="animated slideInUp", ref="chartPie")
+            .charts-style.animated.slideInUp(ref="chartPie")
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page3-bkg(:style="{height: screenHeight + 'px'}")
+        .banner-bg.border-box.full-width.padding-xl.relative.page3-bkg(
+          :style="{ height: screenHeight + 'px' }"
+        )
           .content-bg.flex-column.text-center.lh-30.font-15
             .flex-row
-              span 您一共成交了 
-              .font-25.ml-3 {{reviewObj.dx_num + reviewObj.zz_num}}
+              span 您一共成交了
+              .font-25.ml-3 {{ reviewObj.dx_num + reviewObj.zz_num }}
               span 笔 合同
             .flex-row
-              span 我们的业务员为您提供了 
-              .font-25.ml-3 {{reviewObj.dx_num}}
+              span 我们的业务员为您提供了
+              .font-25.ml-3 {{ reviewObj.dx_num }}
               span 笔 定向开单服务
             .flex-row
-              span 您总是习惯在 
-              .font-25.ml-3.mr-3 {{getBgTime(reviewObj.page_backgroup)}}
+              span 您总是习惯在
+              .font-25.ml-3.mr-3 {{ getBgTime(reviewObj.page_backgroup) }}
               span 的时候采购
             .flex-row
               span 型云一共为您节约了
-              .font-25.ml-3 {{reviewObj.save_time}}
+              .font-25.ml-3 {{ reviewObj.save_time }}
               span 分钟 的交易时间
             span 您可以利用这些时间
             .flex-row(v-if="[getRelase(reviewObj.save_time)] == 'movie'")
               span 多看
-              .font-25.ml-3 {{relaseNum}}
+              .font-25.ml-3 {{ relaseNum }}
               span 场 精彩的电影
             .flex-row(v-else)
               span 多听
-              .font-25.ml-3 {{relaseNum}}
+              .font-25.ml-3 {{ relaseNum }}
               span 首 美妙的歌曲
             span 更多的陪伴家人
             span 与朋友分享自己的快乐
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page4-bkg(:style="{height: screenHeight + 'px'}")
+        .banner-bg.border-box.full-width.padding-xl.relative.page4-bkg(
+          :style="{ height: screenHeight + 'px' }"
+        )
           .content-bg.flex-column.text-center.lh-30.font-15
             .flex-row
-              .font-25.ml-3.mr-3 {{registerYear}}
+              .font-25.ml-3.mr-3 {{ registerYear }}
               span 年
-              .font-25.ml-3.mr-3 {{registerMonth}}
+              .font-25.ml-3.mr-3 {{ registerMonth }}
               span 月
-              .font-25.ml-3.mr-3 {{registerDay}}
+              .font-25.ml-3.mr-3 {{ registerDay }}
               span 日
             span 您注册了型云
             .flex-row
-              span 成为了型云第 
-              .font-25.ml-3.mr-3 {{reviewObj.register_ranking}}
+              span 成为了型云第
+              .font-25.ml-3.mr-3 {{ reviewObj.register_ranking }}
               span 位客户
             span 您的一小步，型云的一大步
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page5-bkg(:style="{height: screenHeight + 'px'}")
-          .pic-8-space(:style="{height: picSpaceHeight + 'px'}")
+        .banner-bg.border-box.full-width.padding-xl.relative.page5-bkg(
+          :style="{ height: screenHeight + 'px' }"
+        )
+          .pic-8-space(:style="{ height: picSpaceHeight + 'px' }")
             .relative.pic-8.text-center.font-13
-              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
                 .flex-row
                   span 本季度型云成交额超
-                  .text-bold {{turnover}}
-              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+                  .text-bold {{ turnover }}
+              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
                 .flex-row
                   span 为
-                  .text-bold {{reviewObj.xy_customer}}
+                  .text-bold {{ reviewObj.xy_customer }}
                   span 位客户完成了
-                  .text-bold {{reviewObj.xy_contract}}
+                  .text-bold {{ reviewObj.xy_contract }}
                   span 笔合同
-              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
                 .flex-row
                   span 提供了
-                  .text-bold {{reviewObj.xy_search}}
+                  .text-bold {{ reviewObj.xy_search }}
                   span 次物资的搜索与比价
-              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
                 .flex-row
                   span 不忘初心、至臻服务
-              .words-bg(:style="{height: wordsBgHeight + 'px'}")
+              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
                 .flex-row
                   span 请您告诉型云，理想的诗和远方。
               .checkbox-bg.flex-column
-                label.flex-row(v-for="item in opinionList" :key="item.id")
-                  input(type="checkbox", :value="item.value", v-model="pickedOpinions")
-                  span {{item.value}}
-              .textarea-bg(:style="{height: textareaBgHeight + 'px'}")
+                label.flex-row(v-for="item in opinionList", :key="item.id")
+                  input(
+                    type="checkbox",
+                    :value="item.value",
+                    v-model="pickedOpinions"
+                  )
+                  span {{ item.value }}
+              .textarea-bg(:style="{ height: textareaBgHeight + 'px' }")
                 span.text-center 其他希望的内容
                 textarea(v-model="writeOpinion", @blur="autoScroll")
-              .confirm-btn(:style="{height: confirmBtnHeight + 'px'}", @click="getOpinions")
+              .confirm-btn(
+                :style="{ height: confirmBtnHeight + 'px' }",
+                @click="getOpinions"
+              )
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page7-bkg(:style="{height: screenHeight + 'px'}")
+        .banner-bg.border-box.full-width.padding-xl.relative.page7-bkg(
+          :style="{ height: screenHeight + 'px' }"
+        )
           .content-bg.flex-column.text-center.lh-30.font-15
             .flex-row
-              .font-25.mr-3 {{reviewObj.days}}
+              .font-25.mr-3 {{ reviewObj.days }}
               span 个日日夜夜
             .flex-row
-              .font-25.mr-3 {{reviewObj.days * 8}}
+              .font-25.mr-3 {{ reviewObj.days * 8 }}
               span 个小时的采钢服务
             span 这就是最长情的陪伴
-            .font-35.lh-47 {{titleInfo(reviewObj.all_weight)}}
+            .font-35.lh-47 {{ titleInfo(reviewObj.all_weight) }}
             span 非您莫属
           .page7-pic(:class="titleBkg")
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page8-bkg(:style="{height: screenHeight + 'px'}")
+        .banner-bg.border-box.full-width.padding-xl.relative.page8-bkg(
+          :style="{ height: screenHeight + 'px' }"
+        )
           .page8-content-bg.relative
             .flex-column.text-center.text-brown
               .font-15 2020第三季度我的钢圈称号是
-              .page8-title {{titleInfo(reviewObj.all_weight)}}
+              .page8-title {{ titleInfo(reviewObj.all_weight) }}
               .font-15 点击查看属于
               .font-15 自己的钢圈称号吧
             .dotted
             .check-btn(@click="clickToShare")
-          img.qrcode.animated.fadeIn(src="../assets/imgs/qrcode.jpg", style="animation-duration: 1.5s; animation-delay: 1s")
+          img.qrcode.animated.fadeIn(
+            src="../assets/imgs/qrcode.jpg",
+            style="animation-duration: 1.5s; animation-delay: 1s"
+          )
 </template>
 
 <script lang="ts">
@@ -378,7 +440,7 @@ class ReviewPageThird extends Vue {
         self.reviewObj.allWeight = self.reviewObj.all_weight.toFixed(2);
         // eslint-disable-next-line prettier/prettier
         self.reviewObj.allWeightPercent = self.reviewObj.all_weight_percent.toFixed(
-          1
+          0
         );
         self.reviewObj.allWeightDiff = (
           self.reviewObj.all_weight_diff * 100

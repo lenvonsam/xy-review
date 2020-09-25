@@ -10,11 +10,11 @@ var MixinConfig = /** @class */ (function (_super) {
         _this.appId = "wxb1a990032d59f1d4";
         _this.phoneReg = /^1[3-9]\d{9}$/;
         _this.codeReg = /^\d+$/;
-        // visitUrl = "http://wechat.xingyun361.com/xyreviewdev/index.html";
-        // visitUrl = "http://localhost:8080/";
-        _this.visitUrl = "http://172.16.120.235:8081/";
+        _this.visitUrl = "http://wechat.xingyun361.com/xyreviewdev/index.html";
         return _this;
     }
+    // visitUrl = "http://localhost:8080/";
+    // visitUrl = "http://172.16.120.235:8081/";
     MixinConfig.prototype.query2Obj = function (query) {
         var arr = query.split("&");
         var obj = {};
