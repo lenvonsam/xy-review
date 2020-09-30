@@ -42,14 +42,8 @@
           v-model="phoneInput"
         )
         .formword-style.text-bold 经营性质
-        div(
-          style="display: flex;flex-direction: row;justify-content: space-between;"
-        )
-          label(
-            v-for="(radio, index in radioGroup)",
-            :key="index",
-            style="display: flex;flex-direction: row;position:relative;"
-          )
+        div(style="display: flex;flex-direction: row;justify-content: space-between;")
+          label(v-for="radio, index in radioGroup", :key="index", style="display: flex;flex-direction: row;position:relative;")
             input(type="radio", v-model="picked", :value="radio.id")
             span {{ radio.name }}
         button.comfirm-btn(@click="submintInfor()") 确认
@@ -400,6 +394,7 @@ class ReviewPageThird extends Vue {
         });
     }
   }
+
   // 测试环境清空数据
   clearData() {
     self = this;
