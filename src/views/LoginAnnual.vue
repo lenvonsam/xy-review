@@ -174,7 +174,7 @@ class LoginAnnual extends Vue {
           this.bindWxAuthXyUser(data.cust_co);
           // 地址
           window.location.replace(
-            self.visitUrl + "#/reviewThird?cust_no=" + data.cust_no
+            self.visitUrl + "#/reviewAnnual?cust_no=" + data.cust_no
           );
         }
       }

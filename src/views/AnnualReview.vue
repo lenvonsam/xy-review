@@ -6,7 +6,7 @@
   ) 退出
   music
   share-modal(v-model="modalShow")
-  .banner-bg.border-box.full-width.relative.page6-bkg(
+  .banner-bg.border-box.full-width.relative.pageGetInfo(
     v-if="custNo == -1",
     :style="{ height: screenHeight + 'px' }"
   )
@@ -42,8 +42,14 @@
           v-model="phoneInput"
         )
         .formword-style.text-bold 经营性质
-        div(style="display: flex;flex-direction: row;justify-content: space-between;")
-          label(v-for="radio, index in radioGroup", :key="index", style="display: flex;flex-direction: row;position:relative;")
+        div(
+          style="display: flex; flex-direction: row; justify-content: space-between"
+        )
+          label(
+            v-for="radio, index in radioGroup",
+            :key="index",
+            style="display: flex; flex-direction: row; position: relative"
+          )
             input(type="radio", v-model="picked", :value="radio.id")
             span {{ radio.name }}
         button.comfirm-btn(@click="submintInfor()") 确认
@@ -123,145 +129,227 @@
             span 您的2020年度钢圈关键词为：
             .title-pic(:class="[keyBkg(reviewObj.key_flag)]")
             .flex-column(v-if="reviewObj.key_flag == 1")
-              .mt-10.text-white(class="animated bounceInRight") 采钢万钧
-              .mt-10.text-white(class="animated bounceInRight") 富可敌国
-            .flex-column(v-if="reviewObj.key_flag == 2")
-              .mt-10.text-white(class="animated bounceInRight") 你来我往
-              .mt-10.text-white(class="animated bounceInRight") 有条不紊
-            .flex-column(v-if="reviewObj.key_flag == 3")
-              .mt-10.text-white(class="animated bounceInRight") 驷马难追
-              .mt-10.text-white(class="animated bounceInRight") 唯快不破
-            .flex-column(v-else)  
-              span(class="animated bounceInRight") 高瞻远瞩
-              span(class="animated bounceInRight") 卓尔不群
-            .flex-row
+              .text-white.animated.bounceInRight 采钢万钧
+              .text-white.animated.bounceInRight 富可敌国
+            .flex-column(v-else-if="reviewObj.key_flag == 2")
+              .text-white.animated.bounceInRight 你来我往
+              .text-white.animated.bounceInRight 有条不紊
+            .flex-column(v-else-if="reviewObj.key_flag == 3")
+              .text-white.animated.bounceInRight 驷马难追
+              .text-white.animated.bounceInRight 唯快不破
+            .flex-column(v-else) 
+              span.animated.bounceInRight 高瞻远瞩
+              span.animated.bounceInRight 卓尔不群
+            .flex-row.content-center
               span 购钢总量超过
-              span {{parseInt(reviewObj.all_weight_percent)}}%
+              span {{ parseInt(reviewObj.all_weight_percent) }}%
               span 的客户
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page3-bkg(
+        .banner-bg.border-box.full-width.padding-xl.relative.page3-bkg.flex-column.font-13(
           :style="{ height: screenHeight + 'px' }"
         )
-          .content-bg.flex-column.text-center.lh-30.font-15
-            .flex-row
-              span 您一共成交了
-              .font-25.ml-3 {{ reviewObj.dx_num + reviewObj.zz_num }}
-              span 笔 合同
-            .flex-row
-              span 我们的业务员为您提供了
-              .font-25.ml-3 {{ reviewObj.dx_num }}
-              span 笔 定向开单服务
-            .flex-row
-              span 您总是习惯在
-              .font-25.ml-3.mr-3 {{ getBgTime(reviewObj.page_backgroup) }}
-              span 的时候采购
-            .flex-row
-              span 型云一共为您节约了
-              .font-25.ml-3 {{ reviewObj.save_time }}
-              span 分钟 的交易时间
-            span 您可以利用这些时间
-            .flex-row(v-if="[getRelase(reviewObj.save_time)] == 'movie'")
-              span 多看
-              .font-25.ml-3 {{ relaseNum }}
-              span 场 精彩的电影
-            .flex-row(v-else)
-              span 多听
-              .font-25.ml-3 {{ relaseNum }}
-              span 首 美妙的歌曲
-            span 更多的陪伴家人
-            span 与朋友分享自己的快乐
+          span 在过去的2020年中
+          .row
+            span 您在型云一共采购了
+            .text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.all_weight.toFixed(2) }}
+            .col 吨钢材
+          span 不忘采购的初心
+          span 更不负挣钱的韶华
+          .row
+            span 相较于2019提升
+            .text-black.text-bold {{ reviewObj.allWeightDiff }}
+            span %
+          .row
+            span 其中
+            .text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.goods_name_one }}
+            .col 为您主要的采购品种
+          .row
+            span 您在型云一共搜索了
+            .text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.xy_search }}
+            .col 次物资
+          .row
+            span 有
+            .text-black.text-bold.text-animate.animated.bounceInLeft {{ cartPercent }}
+            .col %成功进入到了您的购物车中
+          span 众里寻他千百度
+          span 型云帮您找到理想中的物资了吗？
+          .flex-row.align-center.mt-10.ml-50
+            img(
+              v-if="findGoods",
+              src="http://xymobile.xingyun361.com/annual_selected.png"
+            )
+            img(
+              v-else,
+              src="http://xymobile.xingyun361.com/annual_unselected.png",
+              @click="findGoods = !findGoods"
+            )
+            .text-black.font-15.ml-3 是
+            img.ml-10(
+              v-if="!findGoods",
+              src="http://xymobile.xingyun361.com/annual_selected.png"
+            )
+            img.ml-10(
+              v-else,
+              src="http://xymobile.xingyun361.com/annual_unselected.png",
+              @click="findGoods = !findGoods"
+            )
+            .text-black.font-15.ml-3 否
+          .submit-btn.font-15(v-if="showFindGoodsBtn", @click="submitFindGoodsSelect") 提交
       swiper-slide
         .banner-bg.border-box.full-width.padding-xl.relative.page4-bkg(
           :style="{ height: screenHeight + 'px' }"
         )
-          .content-bg.flex-column.text-center.lh-30.font-15
-            .flex-row
-              .font-25.ml-3.mr-3 {{ registerYear }}
-              span 年
-              .font-25.ml-3.mr-3 {{ registerMonth }}
-              span 月
-              .font-25.ml-3.mr-3 {{ registerDay }}
-              span 日
-            span 您注册了型云
-            .flex-row
-              span 成为了型云第
-              .font-25.ml-3.mr-3 {{ reviewObj.register_ranking }}
-              span 位客户
-            span 您的一小步，型云的一大步
+          .flex-column.lh-47.font-14.ff-zwj.rotate-content
+            .flex-row.align-baseline
+              span 2020年您一共成交了
+              .font-23.ml-3.mr-3.text-bold {{ reviewObj.dx_num + reviewObj.zz_num }}
+              span 笔合同
+            .flex-row.align-baseline
+              span 我们的业务员为您提供了
+              .font-23.text-bold {{ reviewObj.dx_num }}
+              span 笔定向开单服务
+            .flex-row.align-baseline
+              span 您总是习惯在
+              .font-23.ml-3.mr-3.text-bold {{ getBgTime(reviewObj.page_backgroup) }}
+              span 的时候采购
+            .flex-row.align-baseline
+              span 型云一共为您节约了
+              .font-23.text-bold {{ (reviewObj.xy_contract * 3).toFixed(0) }}
+              span 分钟的交易时间
+            span 您可以利用这些时间
+            .flex-row.align-baseline(
+              v-if="[getRelase(reviewObj.xy_contract * 3)] == 'movie'"
+            )
+              span 多看
+              .font-23.ml-3.text-bold {{ relaseNum }}
+              span 场精彩的电影，
+              span 更多的陪伴家人
+            .flex-row.align-baseline(v-else)
+              span 多听
+              .font-23.ml-3.text-bold {{ relaseNum }}
+              span 首美妙的歌曲，
+              span 更多的陪伴家人
+            span 与朋友分享自己的快乐
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page5-bkg(
+        .banner-bg.border-box.full-width.padding-xl.pt-30.relative.page5-bkg(
           :style="{ height: screenHeight + 'px' }"
         )
-          .pic-8-space(:style="{ height: picSpaceHeight + 'px' }")
-            .relative.pic-8.text-center.font-13
-              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
-                .flex-row
-                  span 本季度型云成交额超
-                  .text-bold {{ turnover }}
-              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
-                .flex-row
-                  span 为
-                  .text-bold {{ reviewObj.xy_customer }}
-                  span 位客户完成了
-                  .text-bold {{ reviewObj.xy_contract }}
-                  span 笔合同
-              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
-                .flex-row
-                  span 提供了
-                  .text-bold {{ reviewObj.xy_search }}
-                  span 次物资的搜索与比价
-              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
-                .flex-row
-                  span 不忘初心、至臻服务
-              .words-bg(:style="{ height: wordsBgHeight + 'px' }")
-                .flex-row
-                  span 请您告诉型云，理想的诗和远方。
-              .checkbox-bg.flex-column
-                label.flex-row(v-for="item in opinionList", :key="item.id")
-                  input(
-                    type="checkbox",
-                    :value="item.value",
-                    v-model="pickedOpinions"
-                  )
-                  span {{ item.value }}
-              .textarea-bg(:style="{ height: textareaBgHeight + 'px' }")
-                span.text-center 其他希望的内容
-                textarea(v-model="writeOpinion", @blur="autoScroll")
-              .confirm-btn(
-                :style="{ height: confirmBtnHeight + 'px' }",
-                @click="getOpinions"
-              )
+          .flex-column.lh-34.font-14(style="color: #414866")
+            .flex-row.align-baseline
+              span 2020年型云成交额超
+              .font-23.ml-3 {{ turnover }}
+            .flex-row.align-baseline(v-if="reviewObj.xy_sale_length")
+              span 交易物资总长度超
+              .font-23.ml-3 {{ reviewObj.xy_sale_length }}
+              span 米
+            .flex-row.align-baseline(v-if="reviewObj.xy_sale_length")
+              span 约等于
+              .font-23.ml-3 {{ (reviewObj.xy_sale_length / 8844).toFixed(0) }}
+              span 座珠穆朗玛峰的高度
+            .flex-row.align-baseline
+              span 为
+              .font-23.ml-3 {{ reviewObj.xy_customer }}
+              span 位客户完成了
+              .font-23.ml-3 {{ reviewObj.xy_contract }}
+              span 笔合同
+            .flex-row.align-baseline
+              span 节约了
+              .font-23.ml-3 {{ (reviewObj.xy_contract / 20).toFixed(0) }}
+              span 小时的交易时间
+            .flex-row.align-baseline
+              span 提供了
+              .font-23.ml-3 {{ reviewObj.xy_search }}
+              span 次物资的搜索与比价
+            .flex-row.align-baseline
+              span 节约了
+              .font-23.ml-3 {{ (reviewObj.xy_search / 20).toFixed(0) }}
+              span 小时
+            span 不忘初心 立志于为客户带来
+            span 更全面、更高效、
+            span 更便捷、成本更低的服务
+      swiper-slide
+        .banner-bg.border-box.full-width.page6-bkg.absolute(
+          :style="{ height: screenHeight + 'px' }"
+        )
+          .content-area.relative.flex-column
+            img.head-pic(:src="reviewObj.employeePic")
+            .flex-row.font-17.content-center
+              span 服务经理：
+              span {{ reviewObj.employee_name }}
+            .flex-row.text-grey.font-15.content-center
+              span 联系电话：
+              span {{ reviewObj.employee_phone }}
+            .mt-10.text-red.text-center 又到了年度星级星级经理评选的时间
+            .text-red.text-center 请您为自己的服务经理点亮服务星级
+            .mt-23.flex-row.content-between.font-14(style="color: #414866")
+              .width-30 售前响应
+              .width-70.flex-row.content-around
+                img.star-pic(
+                  v-for="(item, index) in starList[0].star",
+                  :key="index",
+                  :src="item",
+                  @click="getStar(starList[0].name, index)"
+                )
+            .mt-23.flex-row.content-between.font-14
+              .width-30 服务态度
+              .width-70.flex-row.content-around
+                img.star-pic(
+                  v-for="(item, index) in starList[1].star",
+                  :key="index",
+                  :src="item",
+                  @click="getStar(starList[1].name, index)"
+                )
+            .mt-23.flex-row.content-between.font-14
+              .width-30 服务质量
+              .width-70.flex-row.content-around
+                img.star-pic(
+                  v-for="(item, index) in starList[2].star",
+                  :key="index",
+                  :src="item",
+                  @click="getStar(starList[2].name, index)"
+                )
+            .mt-23.flex-row.content-between.font-14
+              .width-30 售后跟踪
+              .width-70.flex-row.content-around
+                img.star-pic(
+                  v-for="(item, index) in starList[3].star",
+                  :key="index",
+                  :src="item",
+                  @click="getStar(starList[3].name, index)"
+                )
+            .mt-23.flex-row.content-between.font-14
+              .width-30 满意程度
+              .width-70.flex-row.content-around
+                img.star-pic(
+                  v-for="(item, index) in starList[4].star",
+                  :key="index",
+                  :src="item",
+                  @click="getStar(starList[4].name, index)"
+                )
+            .mt-23.font-14(style="color: #414866") 感谢您一直以来的认可和支持，欢迎多提宝贵的意见和建议型云的诗和远方，就是为您创造更好的购钢体验！
+            .submit-btn(v-if="showSubmitStarBtn", @click="submitStar") 提交评价
       swiper-slide
         .banner-bg.border-box.full-width.padding-xl.relative.page7-bkg(
           :style="{ height: screenHeight + 'px' }"
         )
-          .content-bg.flex-column.text-center.lh-30.font-15
-            .flex-row
+          .content-bg.flex-column.text-center.lh-40.font-15
+            span 2020属您最“关键字”！
+            .font-35.lh-47(v-if="reviewObj.key_flag == 1") 富
+            .font-35.lh-47(v-else-if="reviewObj.key_flag == 2") 浪
+            .font-35.lh-47(v-else-if="reviewObj.key_flag == 3") 爽
+            .font-35.lh-47(v-else) 稳
+            .flex-row.content-center.align-baseline
+              span 购钢总量超过
+              .font-25.ml-3.mr-3 {{ parseInt(reviewObj.all_weight_percent) }}
+              span %的客户
+            .flex-row.content-center
               .font-25.mr-3 {{ reviewObj.days }}
               span 个日日夜夜
-            .flex-row
-              .font-25.mr-3 {{ reviewObj.days * 8 }}
+            .flex-row.content-center
+              .font-25.mr-3 {{ (reviewObj.xy_contract / 6).toFixed(0) }}
               span 个小时的采钢服务
             span 这就是最长情的陪伴
-            .font-35.lh-47 {{ titleInfo(reviewObj.all_weight) }}
-            span 非您莫属
           .page7-pic(:class="titleBkg")
-      swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.relative.page8-bkg(
-          :style="{ height: screenHeight + 'px' }"
-        )
-          .page8-content-bg.relative
-            .flex-column.text-center.text-brown
-              .font-15 2020第三季度我的钢圈称号是
-              .page8-title {{ titleInfo(reviewObj.all_weight) }}
-              .font-15 点击查看属于
-              .font-15 自己的钢圈称号吧
-            .dotted
-            .check-btn(@click="clickToShare")
-          img.qrcode.animated.fadeIn(
-            src="../assets/imgs/qrcode.jpg",
-            style="animation-duration: 1.5s; animation-delay: 1s"
-          )
 </template>
 
 <script lang="ts">
@@ -300,15 +388,6 @@ class AnnualReview extends Vue {
   titleBkg = "first";
   chartData = [];
   relaseNum = 1;
-  registerYear = "2020";
-  registerMonth = "01";
-  registerDay = "01";
-  opinionList = [
-    { id: 0, value: "希望增加更多型钢配套物资" },
-    { id: 1, value: "希望增加远期订货服务" },
-    { id: 2, value: "希望增加仓单质押服务" },
-    { id: 3, value: "希望增加特价竞拍服务" }
-  ];
   writeOpinion = "";
   pickedOpinions = [];
   phoneInput = "";
@@ -328,6 +407,68 @@ class AnnualReview extends Vue {
   wordsBgHeight = 21;
   textareaBgHeight = 90;
   confirmBtnHeight = 27;
+  cartPercent = "";
+  findGoods = true;
+  showFindGoodsBtn = true;
+  saveHours = "";
+  starList = [
+    {
+      name: "sqxy",
+      star: [
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png"
+      ],
+      num: 0
+    },
+    {
+      name: "fwtd",
+      star: [
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png"
+      ],
+      num: 0
+    },
+    {
+      name: "fwzl",
+      star: [
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png"
+      ],
+      num: 0
+    },
+    {
+      name: "shgz",
+      star: [
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png"
+      ],
+      num: 0
+    },
+    {
+      name: "mycd",
+      star: [
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png",
+        "http://xymobile.xingyun361.com/annual_unselect_star.png"
+      ],
+      num: 0
+    }
+  ];
+  showSubmitStarBtn = true;
   beforeMount() {
     self = this;
     self.picSpaceHeight = (560 / 667) * window.innerHeight;
@@ -420,7 +561,7 @@ class AnnualReview extends Vue {
     const data = await self.ironRequest(
       "promote/customerOrderInfo.shtml?custNo=" +
         self.custNo +
-        "&recordTime=2020Q3",
+        "&recordTime=2020Q4",
       {},
       "get"
     );
@@ -544,9 +685,71 @@ class AnnualReview extends Vue {
             }
           }
         }
-        self.registerYear = self.reviewObj.register_time.substr(0, 4);
-        self.registerMonth = self.reviewObj.register_time.substr(5, 2);
-        self.registerDay = self.reviewObj.register_time.substr(8, 2);
+        const cartPer = Math.floor(
+          self.reviewObj.cart_count / self.reviewObj.search_count
+        );
+        self.cartPercent = cartPer;
+        // if (cartPer < 10) {
+        //   self.cartPercent = "低于10%";
+        // } else if (cartPer > 90) {
+        //   self.cartPercent = "超过90%";
+        // } else {
+        //   self.cartPercent = "超过" + cartPer + "%";
+        // }
+        self.reviewObj.employeePic = "http:" + self.reviewObj.employee_pic;
+        if (
+          self.reviewObj.rating_sqxy !== 0 ||
+          self.reviewObj.rating_fwtd !== 0 ||
+          self.reviewObj.rating_fwzl !== 0 ||
+          self.reviewObj.rating_shgz !== 0 ||
+          self.reviewObj.rating_mycd !== 0
+        ) {
+          self.submitStarBtn = false;
+        }
+        if (self.reviewObj.rating_sqxy !== 0) {
+          self.showSubmitStarBtn = false;
+          self.starList[0].num = self.reviewObj.rating_sqxy;
+          for (let i = self.reviewObj.rating_sqxy; i >= 0; i--) {
+            self.starList[0].star[i] =
+              "http://xymobile.xingyun361.com/annual_select_star.png";
+          }
+        }
+        if (self.reviewObj.rating_fwtd !== 0) {
+          self.showSubmitStarBtn = false;
+          self.starList[1].num = self.reviewObj.rating_fwtd;
+          for (let i = self.reviewObj.rating_fwtd; i >= 0; i--) {
+            self.starList[1].star[i] =
+              "http://xymobile.xingyun361.com/annual_select_star.png";
+          }
+        }
+        if (self.reviewObj.rating_fwzl !== 0) {
+          self.showSubmitStarBtn = false;
+          self.starList[2].num = self.reviewObj.rating_fwzl;
+          for (let i = self.reviewObj.rating_fwzl; i >= 0; i--) {
+            self.starList[2].star[i] =
+              "http://xymobile.xingyun361.com/annual_select_star.png";
+          }
+        }
+        if (self.reviewObj.rating_shgz !== 0) {
+          self.showSubmitStarBtn = false;
+          self.starList[3].num = self.reviewObj.rating_shgz;
+          for (let i = self.reviewObj.rating_shgz; i >= 0; i--) {
+            self.starList[3].star[i] =
+              "http://xymobile.xingyun361.com/annual_select_star.png";
+          }
+        }
+        if (self.reviewObj.rating_mycd !== 0) {
+          self.showSubmitStarBtn = false;
+          self.starList[4].num = self.reviewObj.rating_mycd;
+          for (let i = self.reviewObj.rating_mycd; i >= 0; i--) {
+            self.starList[4].star[i] =
+              "http://xymobile.xingyun361.com/annual_select_star.png";
+          }
+        }
+        if ("cart_confirm" in self.reviewObj) {
+          self.findGoods = self.reviewObj.cart_confirm === 0 ? false : true;
+          self.showFindGoodsBtn = false;
+        }
       }
     } else {
       self.$alert.show({
@@ -556,30 +759,6 @@ class AnnualReview extends Vue {
           self.showPage = false;
         }
       });
-    }
-  }
-  async getOpinions() {
-    self = this;
-    if (self.pickedOpinions.length == 0 && self.writeOpinion == "") {
-      self.$alert.show({ msg: "请输入相关意见" });
-    } else {
-      let opinionStr = self.pickedOpinions.join(",");
-      opinionStr = opinionStr + "," + self.writeOpinion;
-      console.log(opinionStr);
-      const paramObj = {
-        custNo: self.custNo,
-        recordTime: "2020Q3",
-        key: "wish",
-        value: opinionStr
-      };
-      const data = await self.ironRequest(
-        "promote/choose.shtml",
-        paramObj,
-        "post"
-      );
-      if (data.returncode == "0") {
-        self.$alert.show({ msg: data.errormsg });
-      }
     }
   }
   async submintInfor() {
@@ -636,11 +815,6 @@ class AnnualReview extends Vue {
     console.log("auto scroll");
     window.scroll(0, 0);
   }
-
-  //点击提示分享至朋友圈
-  clickToShare() {
-    self.$alert.show({ msg: "点击右上角分享至朋友圈" });
-  }
   //钢圈关键词背景图片
   keyBkg(type: number): string {
     switch (type) {
@@ -691,6 +865,80 @@ class AnnualReview extends Vue {
       return "music";
     }
   }
+  async submitFindGoodsSelect() {
+    const paramsObj = {
+      custNo: this.custNo,
+      recordTime: "2020Q4",
+      key: "cart_confirm",
+      value: this.findGoods === true ? 1 : 0
+    };
+    const data = await self.ironRequest(
+      "promote/choose.shtml",
+      paramsObj,
+      "post"
+    );
+    if (data.returncode == "0") {
+      self.$alert.show({ msg: data.errormsg });
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      self.showFindGoodsBtn = false;
+    }
+  }
+  getStar(name: string, index: number) {
+    console.log(name + "+" + index);
+    this.starList.map(item => {
+      if (item.name === name) {
+        item.num = index + 1;
+        item.star = [
+          "http://xymobile.xingyun361.com/annual_unselect_star.png",
+          "http://xymobile.xingyun361.com/annual_unselect_star.png",
+          "http://xymobile.xingyun361.com/annual_unselect_star.png",
+          "http://xymobile.xingyun361.com/annual_unselect_star.png",
+          "http://xymobile.xingyun361.com/annual_unselect_star.png"
+        ];
+        for (let i = index; i >= 0; i--) {
+          item.star[i] =
+            "http://xymobile.xingyun361.com/annual_select_star.png";
+        }
+      }
+    });
+    this.$forceUpdate();
+  }
+  async submitStar() {
+    if (
+      this.starList[0].num === 0 ||
+      this.starList[1].num === 0 ||
+      this.starList[2].num === 0 ||
+      this.starList[3].num === 0 ||
+      this.starList[4].num === 0
+    ) {
+      self.$alert.show({ msg: "请点亮评星，最低选择一颗星" });
+      return false;
+    }
+    const paramsObj = {
+      custNo: this.custNo,
+      recordTime: "2020Q4",
+      key: "rating_sqxy,rating_fwtd,rating_fwzl,rating_shgz,rating_mycd",
+      value:
+        this.starList[0].num +
+        "," +
+        this.starList[1].num +
+        "," +
+        this.starList[2].num +
+        "," +
+        this.starList[3].num +
+        "," +
+        this.starList[4].num
+    };
+    const data = await self.ironRequest(
+      "promote/choose.shtml",
+      paramsObj,
+      "post"
+    );
+    if (data.returncode == "0") {
+      self.$alert.show({ msg: data.errormsg });
+      self.showSubmitStarBtn = false;
+    }
+  }
 }
 export default AnnualReview;
 </script>
@@ -699,8 +947,14 @@ export default AnnualReview;
   font-family cute
   font-style normal
   src url('../assets/font/cute.TTF')
+@font-face
+  font-family zwj
+  font-style normal
+  src url('../assets/font/zhangweijing.ttf')
 .ff-cute
   font-family cute
+.ff-zwj
+  font-family zwj
 vm(val)
   return (val / 375) * 100vw
 vh(val)
@@ -710,21 +964,33 @@ vh(val)
   flex-direction column
 .content-center
   justify-content center
+.content-between
+  justify-content space-between
+.content-around
+  justify-content space-around
 .align-center
   align-items center
+.align-end
+  align-items flex-end
+.align-baseline
+  align-items baseline
 .flex-row
   display flex
   flex-direction row
-  align-items baseline
-  justify-content center
 .font-13
-  font-size vm(13)
+  font-size vm(12)
 .font-14
   font-size vm(14)
 .font-15
   font-size vm(15)
 .font-16
   font-size vm(16)
+.font-17
+  font-size vm(17)
+.font-19
+  font-size vm(19)
+.font-23
+  font-size vm(23)
 .font-25
   font-size vm(25)
 .font-35
@@ -735,16 +1001,36 @@ vh(val)
   line-height vh(30)
 .lh-34
   line-height vh(34)
+.lh-40
+  line-height vh(40)
 .lh-47
   line-height vh(47)
+.lh-51
+  line-height vh(51)
+.mt-10
+  margin-top vh(10)
+.mt-23
+  margin-top vh(23)
 .mt-310
   margin-top vh(310)
 .ml-3
   margin-left vm(3)
+.ml-10
+  margin-left vm(10)
+.ml-50
+  margin-left vm(50)
 .mr-3
   margin-right vm(3)
+.width-30
+  width 30%
+.width-70
+  width 70%
 .text-white
   color white
+.text-black
+  color #000000
+.text-grey
+  color #8A8A8F
 .text-brown
   color #48362A
 .text-bold
@@ -805,76 +1091,68 @@ vh(val)
       background-size 100% 100%
 .page3-bkg
   background -webkit-image-set(
-    url('http://xymobile.xingyun361.com/bg_3_1x.png') 1x,
-    url('http://xymobile.xingyun361.com/bg_3.png') 2x
+    url('http://xymobile.xingyun361.com/annual_bg_3_1x.png') 1x,
+    url('http://xymobile.xingyun361.com/annual_bg_3.png') 2x
   )
+  padding vh(120) 0 0 vm(85)
+  font-size vm(13)
+  color #888888
+  line-height vh(30)
+  .submit-btn
+    width vm(111)
+    height vh(30)
+    line-height vh(30)
+    text-align center
+    color #ffffff
+    font-weight bold
+    background #B6B9C2
+    border-radius 15px
+    margin-top vh(5)
+    margin-left vm(40)
 .page4-bkg
   background -webkit-image-set(
-    url('http://xymobile.xingyun361.com/bg_4_1x.png') 1x,
-    url('http://xymobile.xingyun361.com/bg_4.png') 2x
+    url('http://xymobile.xingyun361.com/annual_bg_4_1x.png') 1x,
+    url('http://xymobile.xingyun361.com/annual_bg_4.png') 2x
   )
+  .rotate-content
+    transform rotate(10deg)
+    margin vh(110) 0 0 vm(26)
 .page5-bkg
   background -webkit-image-set(
-    url('http://xymobile.xingyun361.com/bg_5_1x.png') 1x,
-    url('http://xymobile.xingyun361.com/bg_5.png') 2x
+    url('http://xymobile.xingyun361.com/annual_bg_5_1x.png') 1x,
+    url('http://xymobile.xingyun361.com/annual_bg_5.png') 2x
   )
-  .pic-8-space
-    width vm(330)
-    // height vh(560)
-    margin vh(24) auto
-    z-index 9
-    .pic-8
-      background-image url('http://xymobile.xingyun361.com/pic_8.png')
-      background-size 100% 100%
-      background-repeat no-repeat
-      width 100%
-      height 100%
-      padding vh(22) 0
-      overflow hidden
-      .words-bg
-        width vm(240)
-        // height vh(21)
-        // line-height vh(21)
-        display flex
-        justify-content center
-        align-item center
-        background #E3DAC9
-        margin vh(4) auto 0
-      .checkbox-bg
-        width vm(205)
-        padding vh(16) 0
-        margin 0 auto
-        align-items flex-start
-        label
-          align-items center
-          padding vh(4) 0
-          span
-            margin-left vm(8)
-      .textarea-bg
-        width vm(210)
-        // height vh(90)
-        background-color #E3DBCA
-        margin 0 auto
-        padding-top vh(10)
-        z-index 9
-        textarea
-          -webkit-user-select auto
-          contenteditable true
-          width 80%
-          height 60%
-          background none
-          outline none
-          border none
-          margin-top vh(4)
-          z-index 999
-      .confirm-btn
-        background-image url('http://xymobile.xingyun361.com/confirm_btn.png')
-        background-size 100% 100%
-        background-repeat no-repeat
-        width vm(89)
-        // height vh(27)
-        margin vh(13) auto 0
 .page6-bkg
+  background-color #FA7268
+  .content-area
+    width vm(313)
+    height vh(480)
+    background #FFFFFF
+    box-shadow 0px -5px 20px 0px rgba(108, 3, 3, 0.3)
+    border-radius 8px
+    margin vh(84) auto 0
+    padding vh(55) vm(17) vh(20)
+    .head-pic
+      width vm(90)
+      height vm(90)
+      position absolute
+      top vm(-45)
+      left vm(126)
+      border-radius 50%
+    .star-pic
+      width vm(18)
+      height vm(18)
+    .submit-btn
+      width 100%
+      height vh(45)
+      background linear-gradient(30deg, #FA7268, #FA68F1)
+      border-radius 8px
+      line-height vh(45)
+      text-align center
+      color #ffffff
+      font-size vm(17)
+      margin vh(30) auto 0
+.pageGetInfo
   background -webkit-image-set(url('http://xymobile.xingyun361.com/bg_6.png') 1x)
   .title-pic
     background-image url('http://xymobile.xingyun361.com/page6_title.png')
@@ -983,37 +1261,12 @@ vh(val)
         color rgba(20, 29, 94, 1)
 .page7-bkg
   background -webkit-image-set(
-    url('http://xymobile.xingyun361.com/bg_7_1x.png') 1x,
-    url('http://xymobile.xingyun361.com/bg_7.png') 2x
+    url('http://xymobile.xingyun361.com/annual_bg_8_1x.png') 1x,
+    url('http://xymobile.xingyun361.com/annual_bg_8.png') 2x
   )
   .content-bg
     width vm(254)
     padding vh(25) 0
-  .page7-pic
-    &.first
-      background-image url('http://xymobile.xingyun361.com/pic_2.png')
-      background-size cover
-      width vm(257)
-      height vh(242)
-      margin vh(28) auto 0
-    &.second
-      background-image url('http://xymobile.xingyun361.com/pic_3.png')
-      background-size cover
-      width vm(271)
-      height vh(256)
-      margin vh(23) auto 0
-    &.third
-      background-image url('http://xymobile.xingyun361.com/pic_4.png')
-      background-size cover
-      width vm(273)
-      height vh(246)
-      margin vh(37) auto 0
-    &.forth
-      background-image url('http://xymobile.xingyun361.com/pic_5.png')
-      background-size cover
-      width vm(235)
-      height vh(258)
-      margin vh(20) auto 0
 .page8-bkg
   background -webkit-image-set(
     url('http://xymobile.xingyun361.com/bg_8_1x.png') 1x,
