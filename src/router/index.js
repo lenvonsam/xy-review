@@ -5,6 +5,8 @@ import Review from "../views/Review.vue";
 import NewReview from "../views/NewReview.vue";
 import LoginThird from "../views/LoginThird.vue";
 import ReviewThird from "../views/ReviewThird.vue";
+import LoginAnnual from "../views/LoginAnnual.vue";
+import AnnualReview from "../views/AnnualReview.vue";
 Vue.use(VueRouter);
 var routes = [
     {
@@ -14,7 +16,7 @@ var routes = [
     {
         path: "/home",
         name: "Home",
-        component: LoginThird
+        component: LoginAnnual
     },
     {
         path: "/newUser",
@@ -50,6 +52,11 @@ var routes = [
         path: "/reviewThird",
         name: "/ReviewThird",
         component: ReviewThird
+    },
+    {
+        path: "/reviewAnnual",
+        name: "/reviewAnnual",
+        component: AnnualReview
     }
 ];
 var router = new VueRouter({
