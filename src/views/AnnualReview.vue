@@ -60,7 +60,7 @@
     )
       .empty-box
         .title-bar
-          img(src="../assets/imgs/empty_title_bar.png")
+          img(src="../assets/imgs/empty_year.png")
         .animal-bar
           img.empty-monkey-left(src="../assets/imgs/monkey_top.png")
           img.empty-arrow(src="../assets/imgs/empty_arrow.png")
@@ -151,7 +151,7 @@
           span 在过去的2020年中
           .row
             span 您在型云一共采购了
-            .text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.all_weight.toFixed(2) }}
+            .text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.all_weight.toFixed(3) }}
             .col 吨钢材
           span 不忘采购的初心
           span 更不负挣钱的韶华
@@ -181,7 +181,7 @@
             img(
               v-else,
               src="http://xymobile.xingyun361.com/annual_unselected.png",
-              @click="findGoods = !findGoods"
+              @click="selectFindGoods"
             )
             .text-black.font-15.ml-3 是
             img.ml-10(
@@ -191,7 +191,7 @@
             img.ml-10(
               v-else,
               src="http://xymobile.xingyun361.com/annual_unselected.png",
-              @click="findGoods = !findGoods"
+              @click="selectFindGoods"
             )
             .text-black.font-15.ml-3 否
           .submit-btn.font-15(v-if="showFindGoodsBtn", @click="submitFindGoodsSelect") 提交
@@ -268,7 +268,7 @@
             span 更全面、更高效、
             span 更便捷、成本更低的服务
       swiper-slide
-        .banner-bg.border-box.full-width.page6-bkg.absolute(
+        .banner-bg.border-box.full-width.page6-bkg.padding-10(
           :style="{ height: screenHeight + 'px' }"
         )
           .content-area.relative.flex-column
@@ -366,7 +366,7 @@ let self: any;
 })
 class AnnualReview extends Vue {
   showPage = false;
-  wxShareTitle = "型云季度回顾";
+  wxShareTitle = "型云年度回顾";
   wxShareDesc = "型云分享描述";
   custNo = "";
   reviewObj = {};
@@ -510,7 +510,7 @@ class AnnualReview extends Vue {
           });
           if (self.custNo != "-1") {
             self.wxShareDesc =
-              "2020第三季度我在型云的采钢关键字是" +
+              "2020年我在型云的采钢关键字是" +
               self.titleInfo(self.reviewObj.all_weight) +
               "，点击查看属于自己的关键字吧！";
             wx.onMenuShareAppMessage({
@@ -572,9 +572,7 @@ class AnnualReview extends Vue {
       if (self.custNo != -1) {
         self.reviewObj.allWeight = self.reviewObj.all_weight.toFixed(2);
         // eslint-disable-next-line prettier/prettier
-        self.reviewObj.allWeightPercent = self.reviewObj.all_weight_percent.toFixed(
-          0
-        );
+        self.reviewObj.allWeightPercent = self.reviewObj.all_weight_percent.toFixed(0);
         self.reviewObj.allWeightDiff = (
           self.reviewObj.all_weight_diff * 100
         ).toFixed(2);
@@ -865,6 +863,13 @@ class AnnualReview extends Vue {
       return "music";
     }
   }
+  selectFindGoods() {
+    if (this.showFindGoodsBtn) {
+      this.findGoods = !this.findGoods;
+    } else {
+      return;
+    }
+  }
   async submitFindGoodsSelect() {
     const paramsObj = {
       custNo: this.custNo,
@@ -884,24 +889,28 @@ class AnnualReview extends Vue {
     }
   }
   getStar(name: string, index: number) {
-    console.log(name + "+" + index);
-    this.starList.map(item => {
-      if (item.name === name) {
-        item.num = index + 1;
-        item.star = [
-          "http://xymobile.xingyun361.com/annual_unselect_star.png",
-          "http://xymobile.xingyun361.com/annual_unselect_star.png",
-          "http://xymobile.xingyun361.com/annual_unselect_star.png",
-          "http://xymobile.xingyun361.com/annual_unselect_star.png",
-          "http://xymobile.xingyun361.com/annual_unselect_star.png"
-        ];
-        for (let i = index; i >= 0; i--) {
-          item.star[i] =
-            "http://xymobile.xingyun361.com/annual_select_star.png";
+    if (this.showSubmitStarBtn) {
+      console.log(name + "+" + index);
+      this.starList.map(item => {
+        if (item.name === name) {
+          item.num = index + 1;
+          item.star = [
+            "http://xymobile.xingyun361.com/annual_unselect_star.png",
+            "http://xymobile.xingyun361.com/annual_unselect_star.png",
+            "http://xymobile.xingyun361.com/annual_unselect_star.png",
+            "http://xymobile.xingyun361.com/annual_unselect_star.png",
+            "http://xymobile.xingyun361.com/annual_unselect_star.png"
+          ];
+          for (let i = index; i >= 0; i--) {
+            item.star[i] =
+              "http://xymobile.xingyun361.com/annual_select_star.png";
+          }
         }
-      }
-    });
-    this.$forceUpdate();
+      });
+      this.$forceUpdate();
+    } else {
+      return;
+    }
   }
   async submitStar() {
     if (
@@ -1021,6 +1030,8 @@ vh(val)
   margin-left vm(50)
 .mr-3
   margin-right vm(3)
+.padding-10
+  padding 10px
 .width-30
   width 30%
 .width-70
@@ -1094,10 +1105,10 @@ vh(val)
     url('http://xymobile.xingyun361.com/annual_bg_3_1x.png') 1x,
     url('http://xymobile.xingyun361.com/annual_bg_3.png') 2x
   )
-  padding vh(120) 0 0 vm(85)
+  padding vh(140) 0 0 vm(85)
   font-size vm(13)
   color #888888
-  line-height vh(30)
+  line-height vh(26)
   .submit-btn
     width vm(111)
     height vh(30)

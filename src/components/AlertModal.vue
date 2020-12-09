@@ -3,9 +3,9 @@ mask-modal(v-model="localShow")
   .box
     .box-inner
       .title {{msg}}
-      .extra-bar(v-if="extraJump", @click="alertResp($event, 'extra')") 无手机号继续查看
       .bottom(@click="alertResp($event, 'confirm')", :style="{marginTop: extraJump ? '15px' : '45px'}")
         .btn {{btnText}}
+      .extra-bar(v-if="extraJump", @click="alertResp($event, 'extra')") 无账号继续查看
 </template>
 
 <script lang="ts">
@@ -71,25 +71,37 @@ export default AlertModal;
         color #262626
         font-weight 400
       .extra-bar
-        width 220px
-        height 38.5px
-        margin 0 auto
-        background-image url('../assets/imgs/review_modal_info_bar.png')
-        background-size cover
-        color #4d70b5
-        text-align center
-        font-size 18px
-        padding-top 10px
-        box-sizing border-box
+        height 45px
+        width 180px
+        margin 10px auto 0
+        background #6994F4
+        font-size 17px
+        font-weight bold
+        letter-spacing 2px
+        display flex
+        align-items center
+        justify-content center
+        color #fff
+        border-radius 23px
+        // width 220px
+        // height 38.5px
+        // margin 0 auto
+        // background-image url('../assets/imgs/review_modal_info_bar.png')
+        // background-size cover
+        // color #4d70b5
+        // text-align center
+        // font-size 18px
+        // padding-top 10px
+        // box-sizing border-box
       .bottom
-        margin-top 45px
+        // margin-top 45px
         .btn
           margin 0 auto
           border-radius 23px
           height 45px
-          width 160px
+          width 180px
           background #6994F4
-          font-size 19px
+          font-size 17px
           font-weight bold
           letter-spacing 2px
           display flex
