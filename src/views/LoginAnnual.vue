@@ -271,7 +271,7 @@ vh(val)
     padding-top vh(42)
     .login-input
       width vm(289)
-      height vh(60)
+      height 60px
       background #FFFFFF
       box-shadow 1px 2px 10px 0px rgba(224, 106, 77, 0.14)
       border-radius 10px
