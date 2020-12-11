@@ -104,7 +104,7 @@
       v-else
     )
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.pt-30.relative.page1-bkg(
+        .banner-bg.border-box.full-width.padding-xl.pt-35.relative.page1-bkg(
           :style="{ height: screenHeight + 'px' }"
         )
           .flex-column.lh-26.font-14(style="color: #414866")
@@ -216,11 +216,11 @@
               span 的时候采购
             .flex-row.align-baseline
               span 型云一共为您节约了
-              .font-23.text-bold {{ (reviewObj.xy_contract * 3).toFixed(0) }}
+              .font-23.text-bold {{ (reviewObj.order_num * 3).toFixed(0) }}
               span 分钟的交易时间
             span 您可以利用这些时间
             .flex-row.align-baseline(
-              v-if="[getRelase(reviewObj.xy_contract * 3)] == 'movie'"
+              v-if="[getRelase(reviewObj.order_num * 3)] == 'movie'"
             )
               span 多看
               .font-23.ml-3.text-bold {{ relaseNum }}
@@ -233,7 +233,7 @@
               span 更多的陪伴家人
             span 与朋友分享自己的快乐
       swiper-slide
-        .banner-bg.border-box.full-width.padding-xl.pt-30.relative.page5-bkg(
+        .banner-bg.border-box.full-width.padding-xl.pt-35.relative.page5-bkg(
           :style="{ height: screenHeight + 'px' }"
         )
           .flex-column.lh-34.font-14(style="color: #414866")
