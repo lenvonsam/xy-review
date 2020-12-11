@@ -300,6 +300,6 @@ vh(val)
       background-image url('http://xymobile.xingyun361.com/annual_login_btn.png')
       background-size 100% 100%
       width vm(308)
-      height vh(72)
+      height 74px
       margin vh(30) auto vh(60)
 </style>

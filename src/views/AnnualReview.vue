@@ -149,31 +149,33 @@
           :style="{ height: screenHeight + 'px' }"
         )
           span 在过去的2020年中
-          .row
+          .row.align-baseline
             span 您在型云一共采购了
-            .text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.all_weight.toFixed(3) }}
+            .font-17.text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.all_weight.toFixed(3) }}
             .col 吨钢材
           span 不忘采购的初心
           span 更不负挣钱的韶华
-          .row
+          .row.align-baseline
             span 相较于2019提升
-            .text-black.text-bold {{ reviewObj.allWeightDiff }}
+            .font-17.text-black.text-bold {{ reviewObj.allWeightDiff }}
             span %
-          .row
+          .row.align-baseline
             span 其中
-            .text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.goods_name_one }}
+            .font-17.text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.goods_name_one }}
             .col 为您主要的采购品种
           .row
+            .charts-style.animated.slideInUp(ref="chartPie")
+          .row.align-baseline
             span 您在型云一共搜索了
-            .text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.xy_search }}
+            .font-17.text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.xy_search }}
             .col 次物资
-          .row
+          .row.align-baseline
             span 有
-            .text-black.text-bold.text-animate.animated.bounceInLeft {{ cartPercent }}
+            .font-17.text-black.text-bold.text-animate.animated.bounceInLeft {{ cartPercent }}
             .col %成功进入到了您的购物车中
           span 众里寻他千百度
           span 型云帮您找到理想中的物资了吗？
-          .flex-row.align-center.mt-10.ml-50
+          .flex-row.align-center(style="margin: 10px auto;")
             img(
               v-if="findGoods",
               src="http://xymobile.xingyun361.com/annual_selected.png"
@@ -194,7 +196,7 @@
               @click="selectFindGoods"
             )
             .text-black.font-15.ml-3 否
-          .submit-btn.font-15(v-if="showFindGoodsBtn", @click="submitFindGoodsSelect") 提交
+          .submit-btn.font-15(v-if="showFindGoodsBtn" @click="submitFindGoodsSelect") 提交
       swiper-slide
         .banner-bg.border-box.full-width.padding-xl.relative.page4-bkg(
           :style="{ height: screenHeight + 'px' }"
@@ -356,6 +358,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import music from "@/components/Music.vue";
 import shareModal from "@/components/ShareModal.vue";
+import echarts from "echarts";
 // eslint-disable-next-line
 let self: any;
 @Component({
@@ -365,6 +368,7 @@ let self: any;
   }
 })
 class AnnualReview extends Vue {
+  echarts: any = echarts;
   showPage = false;
   wxShareTitle = "型云年度回顾";
   wxShareDesc = "型云分享描述";
@@ -748,6 +752,9 @@ class AnnualReview extends Vue {
           self.findGoods = self.reviewObj.cart_confirm === 0 ? false : true;
           self.showFindGoodsBtn = false;
         }
+        setTimeout(function() {
+          self.setChart();
+        }, 300);
       }
     } else {
       self.$alert.show({
@@ -948,6 +955,73 @@ class AnnualReview extends Vue {
       self.showSubmitStarBtn = false;
     }
   }
+  // 画饼图
+  setChart() {
+    const seriesName = [];
+    this.chartData.map(item => {
+      seriesName.push(item.name);
+    });
+    console.log("chartData:>>", this.chartData);
+    self = this;
+    const chart = this.echarts.init(this.$refs.chartPie);
+    chart.setOption({
+      aria: {
+        show: true
+      },
+      series: [
+        {
+          // name: "111",
+          top: 15,
+          type: "pie",
+          radius: ["30%", "53%"],
+          minAngle: 25,
+          // avoidLabelOverlap: false,
+          label: {
+            show: true,
+            position: "outside",
+            formatter: "{a|{b}}\n{hr|}\n  {per|{d}%}  ",
+            rich: {
+              a: {
+                color: "#8B7B8B",
+                lineHeight: 22,
+                align: "center"
+              },
+              hr: {
+                borderColor: "#8B7B8B",
+                width: "100%",
+                borderWidth: 0.5,
+                height: 0.5
+              },
+              per: {
+                color: "#8B7B8B",
+                align: "center",
+                padding: [0, 0, 4, 0]
+              }
+            }
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: "30",
+              fontWeight: "bold"
+            }
+          },
+          labelLine: {
+            show: true
+          },
+          color: [
+            "#CDB5CD",
+            "#8DB6CD",
+            "#CDB7B5",
+            "#CD8162",
+            "#9F79EE",
+            "#32CD99"
+          ],
+          data: this.chartData
+        }
+      ]
+    });
+  }
 }
 export default AnnualReview;
 </script>
@@ -1059,8 +1133,8 @@ vh(val)
   padding vh(15) 0
 .page1-bkg
   background -webkit-image-set(
-    url('http://xymobile.xingyun361.com/annual_bg_1_1x.png') 1x,
-    url('http://xymobile.xingyun361.com/annual_bg_1.png') 2x
+    url('http://xymobile.xingyun361.com/annual_bg_1_1x_copy.png') 1x,
+    url('http://xymobile.xingyun361.com/annual_bg_1_copy.png') 2x
   )
 .page2-bkg
   // padding-top 10%
@@ -1102,13 +1176,17 @@ vh(val)
       background-size 100% 100%
 .page3-bkg
   background -webkit-image-set(
-    url('http://xymobile.xingyun361.com/annual_bg_3_1x.png') 1x,
-    url('http://xymobile.xingyun361.com/annual_bg_3.png') 2x
+    url('http://xymobile.xingyun361.com/annual_bg_3_1x_copy.png') 1x,
+    url('http://xymobile.xingyun361.com/annual_bg_3_copy.png') 2x
   )
-  padding vh(140) 0 0 vm(85)
+  padding vh(75) vm(35)
   font-size vm(13)
   color #888888
   line-height vh(26)
+  .charts-style
+    width vm(335)
+    height vh(200)
+    margin-left vm(-20)
   .submit-btn
     width vm(111)
     height vh(30)
@@ -1118,20 +1196,19 @@ vh(val)
     font-weight bold
     background #B6B9C2
     border-radius 15px
-    margin-top vh(5)
-    margin-left vm(40)
+    margin vh(5) auto
 .page4-bkg
   background -webkit-image-set(
-    url('http://xymobile.xingyun361.com/annual_bg_4_1x.png') 1x,
-    url('http://xymobile.xingyun361.com/annual_bg_4.png') 2x
+    url('http://xymobile.xingyun361.com/annual_bg_4_1x_copy.png') 1x,
+    url('http://xymobile.xingyun361.com/annual_bg_4_copy.png') 2x
   )
   .rotate-content
     transform rotate(10deg)
-    margin vh(110) 0 0 vm(26)
+    margin vh(110) 0 0 vm(29)
 .page5-bkg
   background -webkit-image-set(
-    url('http://xymobile.xingyun361.com/annual_bg_5_1x.png') 1x,
-    url('http://xymobile.xingyun361.com/annual_bg_5.png') 2x
+    url('http://xymobile.xingyun361.com/annual_bg_5_1x_copy.png') 1x,
+    url('http://xymobile.xingyun361.com/annual_bg_5_copy.png') 2x
   )
 .page6-bkg
   background-color #FA7268
