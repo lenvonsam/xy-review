@@ -48,7 +48,7 @@ class LoginAnnual extends Vue {
     }
     if (this.exitNo.length > 0)
       window.location.replace(
-        self.visitUrl + "#/reviewThird?cust_no=" + this.exitNo
+        self.visitUrl + "#/reviewAnnual?cust_no=" + this.exitNo
       );
     if (!this.userAuth) {
       if (this.authRequest == "0") {
@@ -120,7 +120,7 @@ class LoginAnnual extends Vue {
             if (resp === "extra") {
               //地址
               window.location.replace(
-                self.visitUrl + "#/reviewThird?cust_no=-1"
+                self.visitUrl + "#/reviewAnnual?cust_no=-1"
               );
             }
           }
