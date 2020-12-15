@@ -140,10 +140,20 @@
             .flex-column(v-else) 
               span.animated.bounceInRight 高瞻远瞩
               span.animated.bounceInRight 卓尔不群
-            .flex-row.content-center
+            .flex-row.content-center(v-if="reviewObj.key_flag == 1")
               span 购钢总量超过
               span {{ parseInt(reviewObj.all_weight_percent) }}%
               span 的客户
+            .flex-row.content-center(v-else-if="reviewObj.key_flag == 2")
+              span 采购频率超过
+              span {{ parseInt(reviewObj.purchase_cycle_percent) }}%
+              span 的客户
+            .flex-row.content-center(v-else-if="reviewObj.key_flag == 3")
+              span 急速付款超过
+              span {{ parseInt(reviewObj.payment_time_percent) }}%
+              span 的客户
+            .flex-row.content-center(v-else)
+              span 您的未来充满无限可能
       swiper-slide
         .banner-bg.border-box.full-width.padding-xl.relative.page3-bkg.flex-column.font-13(
           :style="{ height: screenHeight + 'px' }"
@@ -167,7 +177,7 @@
             .charts-style.animated.slideInUp(ref="chartPie")
           .row.align-baseline
             span 您在型云一共搜索了
-            .font-17.text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.xy_search }}
+            .font-17.text-black.text-bold.text-animate.animated.bounceInLeft {{ reviewObj.search_count }}
             .col 次物资
           .row.align-baseline
             span 有
@@ -826,11 +836,11 @@ class AnnualReview extends Vue {
       case 1:
         return "fu";
       case 2:
-        return "lang";
+        return "wen";
       case 3:
         return "shaung";
       default:
-        return "wen";
+        return "lang";
     }
   }
   // 根据条件显示称号
@@ -1165,14 +1175,14 @@ vh(val)
     &.fu
       background-image url('http://xymobile.xingyun361.com/annual_fu.png')
       background-size 100% 100%
-    &.lang
-      background-image url('http://xymobile.xingyun361.com/annual_lang.png')
+    &.wen
+      background-image url('http://xymobile.xingyun361.com/annual_wen.png')
       background-size 100% 100%
     &.shuang
       background-image url('http://xymobile.xingyun361.com/annual_shuang.png')
       background-size 100% 100%
-    &.wen
-      background-image url('http://xymobile.xingyun361.com/annual_wen.png')
+    &.lang
+      background-image url('http://xymobile.xingyun361.com/annual_lang.png')
       background-size 100% 100%
 .page3-bkg
   background -webkit-image-set(
