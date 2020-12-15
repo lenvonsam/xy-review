@@ -107,7 +107,7 @@
         .banner-bg.border-box.full-width.padding-xl.pt-35.relative.page1-bkg(
           :style="{ height: screenHeight + 'px' }"
         )
-          .flex-column.lh-26.font-14(style="color: #414866")
+          .flex-column.lh-30.font-15(style="color: #414866")
             span 再见，2020，
             span 这是特别的一年，
             span 我们克服一切，勇往直前。
@@ -347,13 +347,23 @@
           .content-bg.flex-column.text-center.lh-40.font-15
             span 2020属您最“关键字”！
             .font-35.lh-47(v-if="reviewObj.key_flag == 1") 富
-            .font-35.lh-47(v-else-if="reviewObj.key_flag == 2") 浪
+            .font-35.lh-47(v-else-if="reviewObj.key_flag == 2") 稳
             .font-35.lh-47(v-else-if="reviewObj.key_flag == 3") 爽
-            .font-35.lh-47(v-else) 稳
-            .flex-row.content-center.align-baseline
+            .font-35.lh-47(v-else) 浪
+            .flex-row.content-center.align-baseline(v-if="reviewObj.key_flag == 1")
               span 购钢总量超过
               .font-25.ml-3.mr-3 {{ parseInt(reviewObj.all_weight_percent) }}
               span %的客户
+            .flex-row.content-center.align-baseline(v-else-if="reviewObj.key_flag == 2")
+              span 采购频率超过
+              .font-25.ml-3.mr-3 {{ parseInt(reviewObj.purchase_cycle_percent) }}
+              span %的客户
+            .flex-row.content-center.align-baseline(v-else-if="reviewObj.key_flag == 3")
+              span 急速付款超过
+              .font-25.ml-3.mr-3 {{ parseInt(reviewObj.payment_time_percent) }}
+              span %的客户
+            .flex-row.content-center.align-baseline(v-else)
+              span 您的未来充满无限可能
             .flex-row.content-center
               .font-25.mr-3 {{ reviewObj.days }}
               span 个日日夜夜
@@ -514,7 +524,7 @@ class AnnualReview extends Vue {
           wx.onMenuShareTimeline({
             title: self.wxShareTitle,
             link: self.visitUrl + "?source=3",
-            imgUrl: "http://xymobile.xingyun361.com/share_review_icon.jpg",
+            imgUrl: "http://xymobile.xingyun361.com/share_pic.png",
             success() {
               console.log("wx share success");
             },
@@ -525,13 +535,13 @@ class AnnualReview extends Vue {
           if (self.custNo != "-1") {
             self.wxShareDesc =
               "2020年我在型云的采钢关键字是" +
-              self.titleInfo(self.reviewObj.all_weight) +
+              self.keyWord(self.reviewObj.key_flag) +
               "，点击查看属于自己的关键字吧！";
             wx.onMenuShareAppMessage({
               title: self.wxShareTitle,
               desc: self.wxShareDesc,
               link: self.visitUrl + "?source=3",
-              imgUrl: "http://xymobile.xingyun361.com/share_review_icon.jpg",
+              imgUrl: "http://xymobile.xingyun361.com/share_pic.png",
               success() {
                 console.log("wx share success");
               },
@@ -697,10 +707,14 @@ class AnnualReview extends Vue {
             }
           }
         }
-        const cartPer = Math.floor(
-          self.reviewObj.cart_count / self.reviewObj.search_count
-        );
-        self.cartPercent = cartPer;
+        if (self.reviewObj.search_count && self.reviewObj.search_count > 0) {
+          const cartPer = Math.floor(
+            self.reviewObj.cart_count / self.reviewObj.search_count
+          );
+          self.cartPercent = cartPer;
+        } else {
+          self.cartPercent = 0;
+        }
         // if (cartPer < 10) {
         //   self.cartPercent = "低于10%";
         // } else if (cartPer > 90) {
@@ -838,9 +852,21 @@ class AnnualReview extends Vue {
       case 2:
         return "wen";
       case 3:
-        return "shaung";
+        return "shuang";
       default:
         return "lang";
+    }
+  }
+  keyWord(type: number): string {
+    switch (type) {
+      case 1:
+        return "富";
+      case 2:
+        return "稳";
+      case 3:
+        return "爽";
+      default:
+        return "浪";
     }
   }
   // 根据条件显示称号
