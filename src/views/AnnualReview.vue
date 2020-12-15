@@ -605,7 +605,9 @@ class AnnualReview extends Vue {
 
         let leftWeight = 0;
         if (self.reviewObj.weight_one) {
-          leftWeight = self.reviewObj.all_weight - self.reviewObj.weight_one;
+          leftWeight = Number(
+            (self.reviewObj.all_weight - self.reviewObj.weight_one).toFixed(3)
+          );
           self.chartData.push({
             value: self.reviewObj.weight_one,
             name: self.reviewObj.goods_name_one
@@ -615,36 +617,17 @@ class AnnualReview extends Vue {
               value: leftWeight,
               name: "其他"
             });
-          }
-          if (self.reviewObj.weight_two) {
-            leftWeight =
-              self.reviewObj.all_weight -
-              self.reviewObj.weight_one -
-              self.reviewObj.weight_two;
-            self.chartData.push({
-              value: self.reviewObj.weight_two,
-              name: self.reviewObj.goods_name_two
-            });
-            if (leftWeight > 0) {
-              self.chartData.map(item => {
-                if (item.name == "其他") {
-                  item.value = leftWeight;
-                }
-              });
-            } else {
-              self.chartData = self.chartData.filter(
-                item => item.name !== "其他"
+            if (self.reviewObj.weight_two && self.reviewObj.weight_two > 0) {
+              leftWeight = Number(
+                (
+                  self.reviewObj.all_weight -
+                  self.reviewObj.weight_one -
+                  self.reviewObj.weight_two
+                ).toFixed(3)
               );
-            }
-            if (self.reviewObj.weight_three) {
-              leftWeight =
-                self.reviewObj.all_weight -
-                self.reviewObj.weight_one -
-                self.reviewObj.weight_two -
-                self.reviewObj.weight_three;
               self.chartData.push({
-                value: self.reviewObj.weight_three,
-                name: self.reviewObj.goods_name_three
+                value: self.reviewObj.weight_two,
+                name: self.reviewObj.goods_name_two
               });
               if (leftWeight > 0) {
                 self.chartData.map(item => {
@@ -652,44 +635,21 @@ class AnnualReview extends Vue {
                     item.value = leftWeight;
                   }
                 });
-              } else {
-                self.chartData = self.chartData.filter(
-                  item => item.name !== "其他"
-                );
-              }
-              if (self.reviewObj.weight_four) {
-                leftWeight =
-                  self.reviewObj.all_weight -
-                  self.reviewObj.weight_one -
-                  self.reviewObj.weight_two -
-                  self.reviewObj.weight_three -
-                  self.reviewObj.weight_four;
-                self.chartData.push({
-                  value: self.reviewObj.weight_four,
-                  name: self.reviewObj.goods_name_four
-                });
-                if (leftWeight > 0) {
-                  self.chartData.map(item => {
-                    if (item.name == "其他") {
-                      item.value = leftWeight;
-                    }
-                  });
-                } else {
-                  self.chartData = self.chartData.filter(
-                    item => item.name !== "其他"
+                if (
+                  self.reviewObj.weight_three &&
+                  self.reviewObj.weight_three > 0
+                ) {
+                  leftWeight = Number(
+                    (
+                      self.reviewObj.all_weight -
+                      self.reviewObj.weight_one -
+                      self.reviewObj.weight_two -
+                      self.reviewObj.weight_three
+                    ).toFixed(3)
                   );
-                }
-                if (self.reviewObj.weight_five) {
-                  leftWeight =
-                    self.reviewObj.all_weight -
-                    self.reviewObj.weight_one -
-                    self.reviewObj.weight_two -
-                    self.reviewObj.weight_three -
-                    self.reviewObj.weight_four -
-                    self.reviewObj.weight_five;
                   self.chartData.push({
-                    value: self.reviewObj.weight_five,
-                    name: self.reviewObj.goods_name_five
+                    value: self.reviewObj.weight_three,
+                    name: self.reviewObj.goods_name_three
                   });
                   if (leftWeight > 0) {
                     self.chartData.map(item => {
@@ -697,12 +657,75 @@ class AnnualReview extends Vue {
                         item.value = leftWeight;
                       }
                     });
+                    if (
+                      self.reviewObj.weight_four &&
+                      self.reviewObj.weight_four > 0
+                    ) {
+                      leftWeight = Number(
+                        (
+                          self.reviewObj.all_weight -
+                          self.reviewObj.weight_one -
+                          self.reviewObj.weight_two -
+                          self.reviewObj.weight_three -
+                          self.reviewObj.weight_four
+                        ).toFixed(3)
+                      );
+                      self.chartData.push({
+                        value: self.reviewObj.weight_four,
+                        name: self.reviewObj.goods_name_four
+                      });
+                      if (leftWeight > 0) {
+                        self.chartData.map(item => {
+                          if (item.name == "其他") {
+                            item.value = leftWeight;
+                          }
+                        });
+                        if (
+                          self.reviewObj.weight_five &&
+                          self.reviewObj.weight_five > 0
+                        ) {
+                          leftWeight = Number(
+                            (
+                              self.reviewObj.all_weight -
+                              self.reviewObj.weight_one -
+                              self.reviewObj.weight_two -
+                              self.reviewObj.weight_three -
+                              self.reviewObj.weight_four -
+                              self.reviewObj.weight_five
+                            ).toFixed(3)
+                          );
+                          self.chartData.push({
+                            value: self.reviewObj.weight_five,
+                            name: self.reviewObj.goods_name_five
+                          });
+                          if (leftWeight > 0) {
+                            self.chartData.map(item => {
+                              if (item.name == "其他") {
+                                item.value = leftWeight;
+                              }
+                            });
+                          } else {
+                            self.chartData = self.chartData.filter(
+                              item => item.name !== "其他"
+                            );
+                          }
+                        }
+                      } else {
+                        self.chartData = self.chartData.filter(
+                          item => item.name !== "其他"
+                        );
+                      }
+                    }
                   } else {
                     self.chartData = self.chartData.filter(
                       item => item.name !== "其他"
                     );
                   }
                 }
+              } else {
+                self.chartData = self.chartData.filter(
+                  item => item.name !== "其他"
+                );
               }
             }
           }
