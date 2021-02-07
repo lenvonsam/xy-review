@@ -1,9 +1,9 @@
 <template lang="pug">
 .container(v-if="showPage")
-  span(
-    style="position: absolute; top: 10px; left: 15px; z-index: 20",
-    @click="clearData"
-  ) 退出
+  //- span(
+  //-   style="position: absolute; top: 10px; left: 15px; z-index: 20",
+  //-   @click="clearData"
+  //- ) 退出
   music
   share-modal(v-model="modalShow")
   .banner-bg.border-box.full-width.relative.pageGetInfo(
