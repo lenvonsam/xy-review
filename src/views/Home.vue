@@ -30,7 +30,7 @@
 import { Component, Vue } from "vue-property-decorator";
 
 let me: any;
-@Component({})
+@Component
 class HomePage extends Vue {
   phone = "";
   code = "";

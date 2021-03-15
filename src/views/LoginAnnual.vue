@@ -4,12 +4,19 @@
     :style="{ height: screenHeight + 'px', width: screenWidth + 1 + 'px' }"
   )
     .input-bkg.flex-column
-      .login-input.flex-row.relative
+      .login-lbl 登录
+      .login-input.flex-row
+        .icon
+          .user-icon
         input(placeholder="请输入手机号", v-model="phoneNum")
-      .login-input.flex-row.relative
-        input(placeholder="请输入验证码", v-model="idCode")
-        .code-btn(@click="getIdCode") {{ codeText }}
-      .confirm-btn(@click="loginIn")
+      .login-input.flex-row.sec
+        .icon
+          .pwd-icon
+        .col
+          input(placeholder="请输入验证码", v-model="idCode")
+        .code-area
+          .code-btn(@click="getIdCode") {{ codeText }}
+      .confirm-btn(@click="loginIn") 登录查看
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -259,47 +266,87 @@ vh(val)
   position relative
   padding 5%
 .login-bkg
-  background -webkit-image-set(url('http://xymobile.xingyun361.com/annual_login_bkg.png') 1x)
-  margin-left -1px
+  // background -webkit-image-set(url('http://xymobile.xingyun361.com/annual_login_bkg.png') 1x)
+  background-image url('../assets/imgs/login_bg.png')
+  background-size 100% 100%
+  // margin-left -1px
+  box-sizing border-box
+  padding-top vh(240)
   .input-bkg
-    background-image url('http://xymobile.xingyun361.com/annual_login_area.png')
+    // background-image url('http://xymobile.xingyun361.com/annual_login_area.png')
+    background-image url('../assets/imgs/login_input_area.png')
     background-size 100% 100%
     background-repeat no-repeat
-    width vm(363)
-    height auto
-    margin vh(262) auto 0
-    padding-top vh(42)
+    width vm(354.5)
+    height vh(377)
+    margin 0 auto
+    box-sizing border-box
+    padding-top vh(70)
+    .login-lbl
+      font-size 22px
+      width vm(60)
+      height vh(20.5)
+      margin 0 auto
+      color white
+      font-weight bold
     .login-input
-      width vm(289)
-      height 60px
+      width vm(250)
+      height vh(45)
       background #FFFFFF
-      box-shadow 1px 2px 10px 0px rgba(224, 106, 77, 0.14)
-      border-radius 10px
-      margin vh(30) auto 0
+      margin vh(19) auto 0
+      &.sec
+        margin vh(13) auto 0
+      display flex
+      box-sizing border-box
+      .icon
+        flex 0 0 vm(22)
+        display flex
+        align-items center
+        justify-content center
+        .user-icon
+          background-image url('../assets/imgs/user_icon.png')
+          background-size 100% 100%
+          width vm(11.5)
+          height vh(13)
+        .pwd-icon
+          background-image url('../assets/imgs/pwd_icon.png')
+          background-size 100% 100%
+          width vm(11)
+          height vh(11)
       input
-        position absolute
-        left vm(34)
+        // left vm(34)
+        padding-right vm(10)
+        width 100%
         background none
         outline none
         border none
+      .code-area
+        flex 0 0 vm(90)
+        display flex
+        align-items center
+        justify-content center
+        height 100%
       .code-btn
-        background-image url('http://xymobile.xingyun361.com/annual_code_bkg.png')
-        background-size 100% 100%
+        background #0B78D2
         display flex
         justify-content center
         align-items center
-        width vm(127)
-        height 100%
-        font-size vm(16)
-        color red
-        text-align center
-        position absolute
-        right 0
-        top 0
+        width vm(80)
+        height vh(37.5)
+        font-size 14px
+        color white
     .confirm-btn
-      background-image url('http://xymobile.xingyun361.com/annual_login_btn.png')
-      background-size 100% 100%
-      width vm(308)
-      height 74px
-      margin vh(30) auto vh(60)
+      width vm(250)
+      height vh(45)
+      background #0B78D2
+      color white
+      margin vh(19) auto 0
+      font-size 19px
+      font-weight bold
+      display flex
+      justify-content center
+      align-items center
+@media screen and (width: 320px)
+  .login-bkg .input-bkg .login-input .code-btn
+    font-size 12px
 </style>
